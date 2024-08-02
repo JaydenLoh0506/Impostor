@@ -6,9 +6,10 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
+from flask_lib import Get, GetPost, APP, WebhookSend
 from os import getenv
 from dotenv import load_dotenv
+from flask import request
 
 # load the environment variables
 load_dotenv()
@@ -26,6 +27,17 @@ async def Index():
 @Get
 async def Test2() -> str:
     return "Hell2o 2World"
+
+@GetPost
+async def Live():
+    file = request.files["file"]
+    if file.filename == "":
+        return "No file selected"
+    if file:
+        print('something')
+        # #file.save("image/test.jpg")
+        # incomplete code to view video on /live
+    return "Success"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
