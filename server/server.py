@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
 #WEBHOOK_URL_TEST : str = str(getenv('DISCORD_WEBHOOK_TEST'))
-HOST_IP : str = str(getenv('HOST_IP'))
-HOST_PORT : int = int(str(getenv('PORT')))
+HOST_IP : str = str(getenv('SERVER_IP'))
+HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 
 # Centralised computing
 @Get

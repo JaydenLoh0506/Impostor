@@ -2,3 +2,6 @@
 client/env
 discord/env
 server/env
+client/.env
+discord/.env
+server/.env
