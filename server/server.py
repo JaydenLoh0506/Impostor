@@ -6,9 +6,11 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
+from flask import Flask, jsonify
+from flask_lib import Get, APP, WebhookSend, Post
 from os import getenv
 from dotenv import load_dotenv
+from opencvtest import capture_photos
 
 # load the environment variables
 load_dotenv()
@@ -27,10 +29,19 @@ async def Index():
 async def Test2() -> str:
     return "Hell2o 2World"
 
+@Post
+async def Capture() -> str:
+    success: bool = capture_photos()
+    if success:
+        return jsonify({"message": "Photos captured successfully!"}), 200
+    else:
+        return jsonify({"message": "Failed to capture photos."}), 500
+
+
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
     
-    
+@post
 def main():
     flask_run()
     
