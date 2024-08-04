@@ -45,13 +45,20 @@ class ApiServiceEnum(Enum):
     Index = "Index"
     Test = "Test"
     TestComms = "TestComms"
+    Live = "Live"
+    CamDict = "CamDict"
+    Image = "Image"
+
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : (False,"Offered Service"),
     ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
-    ApiServiceEnum.TestComms : (True,"Test Server Communication")
+    ApiServiceEnum.TestComms : (True,"Test Server Communication"),
+    ApiServiceEnum.Live : (True, "Camera Feed"),
+    ApiServiceEnum.CamDict : (False, "Camera Status"),
+    ApiServiceEnum.Image : (False, "Reference Image Location")
 }
 
 class RestfulClient:
@@ -107,3 +114,4 @@ class RestfulClient:
     def UpdateServiceDict(self) -> None:
         """Require try and except block"""
         self.service_dict_ = self.GetJson(self.CreateUrl("/api")) # First Route must be /api is fixed
+        self.service_dict_[ApiServiceEnum.Image.value] = "/image/"

@@ -34,8 +34,6 @@ class CameraModuleEnum(Enum):
     cam2_ : str = "cams2"
     cam3_ : str = "cams3"
     
-type CameraIP = str # type: ignore
-    
 class CameraObject:
     def __init__(self, name: str = "", location: str = "", status: str = "") -> None:
         self.name_ : str = name
@@ -47,10 +45,10 @@ class CameraModule:
         # CLIENT will send self location to server
         # SERVER will assign name and status to client
         # CLIENT can request server camera dict
-        self.cam_dict_ : dict[CameraModuleEnum, CameraObject]
+        self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ : tuple[CameraModuleEnum, CameraObject, CameraIP]
+        self.cam_ : tuple[CameraModuleEnum, CameraObject, str]
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
@@ -77,7 +75,7 @@ class CameraModule:
             return False
 
     #Change camera IP
-    def ChangeIP(self, file_path, new_ip):
+    def ChangeIP(self, file_path : str, new_ip : str):
         """CLIENT function"""
         try:
             # Ensure the new IP ends with /video
