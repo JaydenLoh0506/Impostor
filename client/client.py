@@ -9,9 +9,7 @@
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
-from cam_ip_lib import ReadIP
-from cv2 import VideoCapture, UMat, imencode
-from cv2.typing import MatLike
+from camera_lib import ReadIP, GetCamFootage
 
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
@@ -31,19 +29,8 @@ def Index() -> None:
 
 def SendVideo() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Live.value])
-    camera : VideoCapture = VideoCapture(CONFIG_IP)
-    success : bool
-    frame : UMat | MatLike
-    ret : bool
-    while True:
-        success, frame = camera.read()
-        if not success:
-            print("Failed to read frame")
-            break
-        else:
-            ret, buffer = imencode(".jpg", frame)
-            image = buffer.tobytes()
-            response : str = RESTFULCLIENT.PostFile(url, image)
+    video : any = GetCamFootage(CONFIG_IP)
+    response : str = RESTFULCLIENT.PostFile(url, video)
     #print(response)
 
 if __name__ == "__main__":
