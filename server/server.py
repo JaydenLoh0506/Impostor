@@ -6,14 +6,14 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
+from flask_lib import Get, GetPost, APP, WebhookSend, Live
 from os import getenv
 from dotenv import load_dotenv
 
 # load the environment variables
 load_dotenv()
 WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
-#WEBHOOK_URL = str(getenv('DISCORD_WEBHOOK_TEST'))
+#WEBHOOK_URL_TEST : str = str(getenv('DISCORD_WEBHOOK_TEST'))
 HOST_IP : str = str(getenv('SERVER_IP'))
 HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 
@@ -38,6 +38,7 @@ def flask_run():
     
 def main():
     flask_run()
+    Live()
     
 if __name__ == "__main__":
     main()

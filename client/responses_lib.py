@@ -43,13 +43,15 @@ class ApiServiceEnum(Enum):
     Index = "Index"
     Test = "Test"
     TestComms = "TestComms"
+    Live = "Live"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : (False,"Offered Service"),
     ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
-    ApiServiceEnum.TestComms : (True,"Test Server Communication")
+    ApiServiceEnum.TestComms : (True,"Test Server Communication"),
+    ApiServiceEnum.Live : (False,"Live Cam")
 }
 
 class RestfulClient:

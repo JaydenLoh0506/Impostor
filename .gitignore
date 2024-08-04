@@ -2,7 +2,7 @@
 client/env
 discord/env
 server/env
-discord/.env
 client/.env
+discord/.env
 server/.env
 *.pyc
