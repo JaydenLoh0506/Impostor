@@ -35,7 +35,7 @@
 # pip install requests
 # import this file in your main file
 
-from requests import post, Response, get # type: ignore
+from requests import post, Response, get 
 from enum import Enum, unique   
 
 # Enum for API Service must match the server
