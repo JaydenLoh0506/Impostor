@@ -87,3 +87,8 @@ async def WebhookSend(webhook_url : str, *, content : str) -> None:
     async with ClientSession() as session:
         WEBHOOK = Webhook.from_url(webhook_url, session=session)
         await WEBHOOK.send(content=content)
+        
+# Service Functions
+@Get 
+def ApiService() -> Response:
+    return jsonify(CALLBACK_FUNCTION_ROUTE)

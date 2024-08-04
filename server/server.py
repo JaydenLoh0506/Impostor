@@ -9,6 +9,7 @@
 from flask_lib import Get, APP, WebhookSend
 from os import getenv
 from dotenv import load_dotenv
+from camera_lib import CameraModuleEnum, CameraModule
 
 # load the environment variables
 load_dotenv()

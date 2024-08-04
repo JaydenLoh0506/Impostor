@@ -53,6 +53,7 @@ class CameraModule:
         self.cam_ : tuple[CameraModuleEnum, CameraObject, CameraIP]
     
     def GenerateCamDict(self) -> None:
+        """SERVER function"""
         for key in CameraModuleEnum:
             self.cam_dict_[key] = CameraObject(key.value, "", "Offline")
     
