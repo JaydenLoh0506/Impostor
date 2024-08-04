@@ -1,3 +1,22 @@
+# this file can be run on client and server
+
+# Class 
+# - CameraModuleEnum : Enum for Camera Module
+# - CameraObject : Camera Object
+# - CameraModule : Camera Module
+
+# Functions 
+# - GetImagePath : Get path to save images for specific camera
+# - GetCamStat : Get camera status
+# - DistributeCam : Get camera with "Offline" status
+# - ToggleCamStatus : Toggle camera status
+# - GetCamFootage : Get camera footage
+# - ReadIP : Get camera IP
+# - ChangeIP : Change camera IP
+
+# Python Version : Python 3.12.1
+# Date : 2024-08-04
+
 from enum import Enum, unique
 from cv2 import VideoCapture, UMat, imencode
 from cv2.typing import MatLike
@@ -7,26 +26,19 @@ class CameraModuleEnum(Enum):
     cam1_ : str = "cams1"
     cam2_ : str = "cams2"
     cam3_ : str = "cams3"
-
-CAM_PATH_DICT : dict[CameraModuleEnum, str]
-CAM_PATH_DICT = {
-    CameraModuleEnum.cam1_ : "image/cams1",
-    CameraModuleEnum.cam2_ : "image/cams2",
-    CameraModuleEnum.cam3_ : "image/cams3"
-}
-
-CAM_LOC_DICT : dict[CameraModuleEnum, str]
-CAM_LOC_DICT = {
-    CameraModuleEnum.cam1_ : "sky",
-    CameraModuleEnum.cam2_ : "door",
-    CameraModuleEnum.cam3_ : "fence"
-}
-
-CAM_STAT_DICT : dict[CameraModuleEnum, str]
-CAM_STAT_DICT  = {
-    CameraModuleEnum.cam1_ : "Offline",
-    CameraModuleEnum.cam2_ : "Offline",
-    CameraModuleEnum.cam3_ : "Offline"
+    
+class CameraObject:
+    def __init__(self, name: str, location: str, status: str) -> None:
+        self.name_ : str = name
+        self.location_ : str = location
+        self.status_ : str = status
+        self.ip_ : str = ""
+        
+CAM_DICT : dict[CameraModuleEnum, CameraObject]
+CAM_DICT = {
+    CameraModuleEnum.cam1_ : CameraObject("cam1", "sky", "Offline"),
+    CameraModuleEnum.cam2_ : CameraObject("cam2", "door", "Offline"),
+    CameraModuleEnum.cam3_ : CameraObject("cam3", "fence", "Offline")
 }
 
 class CameraModule:
@@ -35,25 +47,25 @@ class CameraModule:
 
     #Get path to save images for specific camera
     def GetImagePath(self, cams : CameraModuleEnum) -> str:
-        return CAM_PATH_DICT[cams]
+        return "image/" + CAM_DICT[cams].name_
     
     #Get camera status
     def GetCamStat(self, cams : CameraModuleEnum) -> str:
-        return CAM_STAT_DICT[cams]
+        return CAM_DICT[cams].status_
     
     #Get camera with "Offline" status
-    def DistributeCam(self) -> CameraModuleEnum:
-        for key, value in CAM_STAT_DICT.items():
-            if value == "Offline":
+    def DistributeCam(self) -> CameraModuleEnum | None:
+        for key, value in CAM_DICT.items():
+            if value.status_ == "Offline":
                 return key
         return None
     
     #Toggle camera status
     def ToggleCamStatus(self, cams: CameraModuleEnum) -> None:
-        if CAM_STAT_DICT[cams] == "Offline":
-            CAM_STAT_DICT[cams] = "Online"
+        if CAM_DICT[cams].status_ == "Offline":
+            CAM_DICT[cams].status_ = "Online"
         else:
-            CAM_STAT_DICT[cams] = "Offline"
+            CAM_DICT[cams].status_ = "Offline"
 
     #Get camera footage
     def GetCamFootage(self, source: str) -> any:
