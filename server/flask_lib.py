@@ -32,7 +32,8 @@ from discord import Webhook, Embed, File
 class CallbackFunctionRoute(Enum):
     ApiService = "/api"
     Index = "/"
-    Test2 = "/test2"
+    Test = "/test"
+    TestComms = "/testcomms"
     Live = "/live"
 
 # dict[function_name, route]

@@ -20,16 +20,21 @@ HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 # Centralised computing
 @Get
 async def Index():
-    await WebhookSend(webhook_url=WEBHOOK_URL, content="Index Page")
+    await WebhookSend(webhook_url=WEBHOOK_URL, content="im status")
     return f"Message Sent"
 
 @Get
-async def Test2() -> str:
-    return "Hell2o 2World"
-    
+async def TestComms() -> str:
+    await WebhookSend(webhook_url=WEBHOOK_URL, content="Comms Received Successfully")
+    return "Success"
+
+# Will be removed
+@Get
+async def Test() -> str:
+    return "Success"
+
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
-    
     
 def main():
     flask_run()

@@ -17,8 +17,8 @@ CONFIG_PATH: str = "client\config.txt"
 CONFIG_IP: str = ReadIP(CONFIG_PATH)
 #MODEL = YOLO('yolo')
             
-def Test2() -> None:
-    url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Test2.value])
+def Test() -> None:
+    url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Test.value])
     response : str = RESTFULCLIENT.GetText(url)
     print(response)
     
@@ -35,7 +35,7 @@ def SendVideo() -> None:
 
 if __name__ == "__main__":
     #Index()
-    Test2()
+    Test()
     SendVideo()
 
 

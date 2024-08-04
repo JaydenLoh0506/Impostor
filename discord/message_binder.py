@@ -3,8 +3,8 @@ from discord_message_lib import DiscordMessage
 from responses_lib import RestfulClient, ApiServiceEnum, API_SERVICE_DICT
 
 
-#def get_response(message : Message, content: str, restful_client : RestfulClient) -> DiscordMessage:
-def get_response(message : Message, content: str) -> DiscordMessage:
+def get_response(message : Message, content: str, restful_client : RestfulClient) -> DiscordMessage:
+#def get_response(message : Message, content: str) -> DiscordMessage:
     """ 
     This is the generic function for binder.
     It will be the place that store all endpoint for the discord bot
@@ -19,12 +19,12 @@ def get_response(message : Message, content: str) -> DiscordMessage:
     discord_message : DiscordMessage = DiscordMessage()
     word = content.split(' ')
     if word[0].lower() == 'status':
-        discord_message.SetMessage('I am alive')
-    elif word[0].lower() == 'web':
-        #discord_message.SetMessage(restful_client.CreateUrl(restful_client.service_dict_[ApiServiceEnum.Index.value]))
-        discord_message.SetMessage('Oh')
-        discord_message.CreateEmbed(title="Webhook", description="This is a webhook", colour=Colour.green())
-        discord_message.EmbedAddField(name="Field 1", value="Value 1", inline=False)
+        if 'Success' == restful_client.GetText(restful_client.CreateUrl(route=restful_client.service_dict_[ApiServiceEnum.TestComms.value])):
+            discord_message.SetMessage('Communication is successful')
+        else:
+            discord_message.SetMessage('Communication failed')
+    elif word[0].lower() == 'api':
+        ServerStatus(context=discord_message, restful_client=restful_client)
     else:
         discord_message.SetMessage('I am not sure what you are asking for')
         
@@ -34,7 +34,8 @@ def ServerStatus(*, context : DiscordMessage, restful_client : RestfulClient) ->
     context.CreateEmbed(title="Server API Service", description="Press the link to open server application", colour=Colour.red())
     
     for api in ApiServiceEnum:
-        context.EmbedAddField(name=API_SERVICE_DICT[api], value=restful_client.CreateUrl(restful_client.service_dict_[api.value]), inline=False)
+        if API_SERVICE_DICT[api][0]:
+            context.EmbedAddField(name=API_SERVICE_DICT[api][1], value=restful_client.CreateUrl(restful_client.service_dict_[api.value]), inline=False)
     
 def CamsStatus(*, context : DiscordMessage, restful_client : RestfulClient) -> None:
     context.CreateEmbed(title="Cams Status", description="Press the link to open cams application", colour=Colour.green())
