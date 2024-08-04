@@ -5,3 +5,4 @@ server/env
 discord/.env
 client/.env
 server/.env
+*.pyc

@@ -1,5 +1,7 @@
 # this is a dummy file from client, pls copy the latest file from client folder
 
+# [WARNING] Update Service Dict requires try and except block
+
 # include this file at the top of your main file
 
 # this file is a library for client requests
@@ -24,7 +26,7 @@
 # Python Version : Python 3.12.1
 # Date : 2024-07-07
 # Requests Version : 2.32.3
-# Software version : 0.1.1
+# Software version : 0.1.3
 
 # arguments rules
 # json_dict : dict[str, str]
@@ -41,13 +43,15 @@ from enum import Enum, unique
 class ApiServiceEnum(Enum):
     ApiService = "ApiService"
     Index = "Index"
-    Test2 = "Test2"
+    Test = "Test"
+    TestComms = "TestComms"
 
-API_SERVICE_DICT : dict[ApiServiceEnum, str]
+API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
-    ApiServiceEnum.ApiService : "Offered Service",
-    ApiServiceEnum.Index : "Main Web",
-    ApiServiceEnum.Test2 : "Testing 2"
+    ApiServiceEnum.ApiService : (False,"Offered Service"),
+    ApiServiceEnum.Index : (True,"Main Web"),
+    ApiServiceEnum.Test : (False,"Internal Verification"),
+    ApiServiceEnum.TestComms : (True,"Test Server Communication")
 }
 
 class RestfulClient:
@@ -56,7 +60,8 @@ class RestfulClient:
         self.server_ip_ : str = server_ip
         self.server_port_ : int = server_port
         self.service_dict_ : dict[str, str]
-        self.UpdateServiceDict()
+        self.server_api_ : bool = False
+        #self.UpdateServiceDict() Can crash if server is not running
         
     # SETTERS
     def UpdateServerIp(self, server_ip : str) -> None:
@@ -99,9 +104,6 @@ class RestfulClient:
         return response.text
     
     # Update Service Dict
-    def UpdateServiceDict(self) -> bool:
+    def UpdateServiceDict(self) -> None:
+        """Require try and except block"""
         self.service_dict_ = self.GetJson(self.CreateUrl("/api")) # First Route must be /api is fixed
-        
-        if self.service_dict_:
-            return True
-        return False
