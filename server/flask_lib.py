@@ -86,20 +86,3 @@ async def WebhookSend(webhook_url : str, *, content : str) -> None:
     async with ClientSession() as session:
         WEBHOOK = Webhook.from_url(webhook_url, session=session)
         await WEBHOOK.send(content=content)
-
-# Service Functions
-@Get 
-def ApiService() -> Response:
-    return jsonify(CALLBACK_FUNCTION_ROUTE)
-
-def GetFrame():
-    while True:
-        file = request.files["file"]
-        if file.filename == "":
-            return "No file selected"
-        if file:
-            yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
-
-@Get
-def Live() -> Response:
-    return Response(GetFrame(), mimetype="multipart/x-mixed-replace; boundary=frame")
