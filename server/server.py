@@ -6,7 +6,7 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
+from flask_lib import Get, GetPost, APP, WebhookSend, Live
 from os import getenv
 from dotenv import load_dotenv
 
@@ -14,8 +14,8 @@ from dotenv import load_dotenv
 load_dotenv()
 WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
 #WEBHOOK_URL_TEST : str = str(getenv('DISCORD_WEBHOOK_TEST'))
-HOST_IP : str = str(getenv('HOST_IP'))
-HOST_PORT : int = int(str(getenv('PORT')))
+HOST_IP : str = str(getenv('SERVER_IP'))
+HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 
 # Centralised computing
 @Get
@@ -26,13 +26,14 @@ async def Index():
 @Get
 async def Test2() -> str:
     return "Hell2o 2World"
-
+    
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
     
     
 def main():
     flask_run()
+    Live()
     
 if __name__ == "__main__":
     main()

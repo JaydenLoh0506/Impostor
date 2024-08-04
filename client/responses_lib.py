@@ -40,12 +40,14 @@ class ApiServiceEnum(Enum):
     ApiService = "ApiService"
     Index = "Index"
     Test2 = "Test2"
+    Live = "Live"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, str]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : "Offered Service",
     ApiServiceEnum.Index : "Main Web",
-    ApiServiceEnum.Test2 : "Testing 2"
+    ApiServiceEnum.Test2 : "Testing 2",
+    ApiServiceEnum.Live : "Live Cam"
 }
 
 class RestfulClient:
