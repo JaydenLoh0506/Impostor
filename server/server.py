@@ -6,7 +6,7 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, GetPost, APP, WebhookSend, Live
+from flask_lib import Get, APP, WebhookSend
 from os import getenv
 from dotenv import load_dotenv
 
@@ -38,7 +38,7 @@ def flask_run():
     
 def main():
     flask_run()
-    Live()
+    #Live()
     
 if __name__ == "__main__":
     main()

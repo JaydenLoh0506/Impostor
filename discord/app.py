@@ -24,7 +24,7 @@ async def SendMessage(message: Message, content: str) -> None:
             RESTFULCLIENT.UpdateServiceDict()
             RESTFULCLIENT.server_api_ = True
         response : DiscordMessage = get_response(message, content, RESTFULCLIENT)
-        await message.channel.send(content=response.message_, embed=response.embed_)
+        await message.channel.send(content=response.message_, embed=response.embed_) # type: ignore
     except Exception as e:
         print(e) # WHO CARES ABOUT EXCEPTIONS
         await message.channel.send("Server is offline")
