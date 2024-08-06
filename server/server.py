@@ -7,7 +7,7 @@
 # - FunctionName
 
 from flask_lib import Get, APP, WebhookSend, GetPost
-from flask import jsonify, Response, request
+from flask import jsonify, Response, request, render_template
 from os import getenv
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
@@ -67,13 +67,19 @@ def GetFrame():
 
 @Get
 def Live() -> Response:
+    #render_template('index.html')
     return Response(GetFrame(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 @GetPost
-def CameraLocation() -> Response:
+def CameraSetup() -> Response:
+    cam_enum : CameraModuleEnum | None
     cam_info = request.get_json()
-    print(cam_info)
-    return "Cam Info obtained"
+    cam_enum = CAMERAMODULE.SetCamLocation(cam_info)
+    if cam_enum == None:
+        return "Server full, no more cameras can be used"
+    else:
+        return f"{cam_enum}"
+    #return "Cam Info obtained"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)

@@ -45,7 +45,7 @@ class ApiServiceEnum(Enum):
     Test = "Test"
     TestComms = "TestComms"
     Live = "Live"
-    CameraLocation = "CameraLocation"
+    CameraSetup = "CameraSetup"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
@@ -54,7 +54,7 @@ API_SERVICE_DICT = {
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
     ApiServiceEnum.Live : (False,"Live Cam"),
-    ApiServiceEnum.CameraLocation : (True, "Camera Location")
+    ApiServiceEnum.CameraSetup : (True, "Camera Setup")
 }
 
 class RestfulClient:
