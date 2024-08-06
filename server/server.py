@@ -6,8 +6,8 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
-from flask import jsonify, Response
+from flask_lib import Get, APP, WebhookSend, GetPost
+from flask import jsonify, Response, request
 from os import getenv
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
@@ -56,6 +56,24 @@ async def CamDict() -> Response:
             "status" : value.status_
         }
     return jsonify(json_dict)
+
+def GetFrame():
+    while True:
+        file = request.files["file"]
+        if file.filename == "":
+            return "No file selected"
+        if file:
+            yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+
+@Get
+def Live() -> Response:
+    return Response(GetFrame(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+@GetPost
+def CameraLocation() -> Response:
+    cam_info = request.get_json()
+    print(cam_info)
+    return "Cam Info obtained"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)

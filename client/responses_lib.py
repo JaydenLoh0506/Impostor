@@ -34,7 +34,8 @@
 # import this file in your main file
 
 from requests import post, Response, get # type: ignore
-from enum import Enum, unique   
+from enum import Enum, unique  
+#from flask import jsonify 
 
 # Enum for API Service must match the server
 @unique # ignore type convention due to enum using VariableName
@@ -44,6 +45,7 @@ class ApiServiceEnum(Enum):
     Test = "Test"
     TestComms = "TestComms"
     Live = "Live"
+    CameraLocation = "CameraLocation"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
@@ -51,7 +53,8 @@ API_SERVICE_DICT = {
     ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.Live : (False,"Live Cam")
+    ApiServiceEnum.Live : (False,"Live Cam"),
+    ApiServiceEnum.CameraLocation : (True, "Camera Location")
 }
 
 class RestfulClient:
@@ -82,6 +85,12 @@ class RestfulClient:
     def PostGetJson(self, url : str, json_dict : dict[str, str]) -> dict[str, str]:
         response : Response = post(url=url, json=json_dict)
         return response.json()
+    
+    #Post camera info
+    def PostCam(self, url: str, cam_):
+        #cam_ = jsonify(cam_)
+        response : Response = post(url=url, json=cam_)
+        return response.text
 
     # Get Json Response
     def GetJson(self, url : str) -> dict[str, str]:

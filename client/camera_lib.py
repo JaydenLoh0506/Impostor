@@ -48,7 +48,7 @@ class CameraModule:
         self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ : tuple[CameraModuleEnum, CameraObject, str]
+        self.cam_ = ['', CameraObject, ''] #type: ignore #list[CameraModuleEnum, CameraObject, str]
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
@@ -61,17 +61,47 @@ class CameraModule:
         try:
             with open(file_path, 'r') as file:
                 # Read the content of the file
-                content = file.readline().strip()
-                
-                # Extract the IP address from the content
-                if content.startswith("IP:"):
-                    self.cam_[2] = content.split(" ")[1]
-                    return True
-                else:
-                    raise ValueError("Invalid file format. Expected 'IP: <url>'.")
+                for line in file:
+                    line = line.strip()
+                    # Extract the IP address from the content
+                    if line.startswith("IP:"):
+                        self.cam_[2] = line.split(" ")[1]
+                        break
+                raise ValueError("IP entry not found in config file.")
         except FileNotFoundError:
             return False
         except Exception as e:
+            return False
+        
+    def read_config(self, file_path):
+        try:
+            with open(file_path, 'r') as file:
+                lines = file.readlines()
+
+                # Initialize variables to hold IP and location
+                ip_address = None
+                location = None
+
+                for line in lines:
+                    line = line.strip()
+
+                    if line.startswith("IP:"):
+                        ip_address = line.split(" ")[1]
+                    elif line.startswith("Location:"):
+                        # Remove quotes if they exist
+                        location = line.split(" ", 1)[1].strip('"')
+
+                if ip_address is None or location is None:
+                    raise ValueError("Config file is missing IP or Location entries.")
+                else:
+                    self.cam_[1].location_ = location
+                    self.cam_[2] = ip_address
+                    return True
+
+        except FileNotFoundError:
+            return False
+        except Exception as e:
+            print(e)
             return False
 
     #Change camera IP
