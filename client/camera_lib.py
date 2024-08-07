@@ -25,7 +25,7 @@
 # Date : 2024-08-04
 
 from enum import Enum, unique
-from cv2 import VideoCapture, UMat, imencode
+from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
 from cv2.typing import MatLike
 
 @unique
@@ -168,22 +168,15 @@ class CameraModule:
             self.cam_dict_[cam_enum].location_ = location
         return cam_enum
 
-    #Get camera footage
-    def GetCamFootage(self, source: str) -> any:
-        """SERVER function"""
-        camera : VideoCapture = VideoCapture(source)
-        success : bool
-        frame : UMat | MatLike
-        ret : bool
-        video = None
-        while True:
-            success, frame = camera.read()
-            if not success:
-                print("Failed to read frame")
+    def DisableCam(self, cam_enum: CameraModuleEnum) -> None:
+        self.ToggleCamStatus(cam_enum)
+        self.cam_dict_[cam_enum].location_ = ""
+
+    def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
+        cam_enum  : CameraModuleEnum | None = None
+        for key in CameraModuleEnum:
+            if f'{key}' == cam_enum_str or f'{key}' == cam_enum_str:
+                cam_enum = key
                 break
-            else:
-                ret, buffer = imencode(".jpg", frame)
-                video = buffer.tobytes()
-                return video
-        return video
+        return cam_enum
     

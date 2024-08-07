@@ -11,6 +11,8 @@ from flask import jsonify, Response, request, render_template
 from os import getenv
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
+from cv2 import imencode, IMREAD_COLOR, imread
+from threading import Semaphore
 
 # load the environment variables
 load_dotenv()
@@ -19,8 +21,14 @@ WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
 HOST_IP : str = str(getenv('SERVER_IP'))
 HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 CAMERAMODULE : CameraModule = CameraModule()
+SEM : Semaphore = Semaphore()
 
 CAMERAMODULE.GenerateCamDict()
+
+# unordered map
+CAMS_MAP : dict[str, CameraModuleEnum] = {}
+for key in CameraModuleEnum:
+    CAMS_MAP[key.value] = key
 
 # Centralised computing
 @Get
@@ -57,18 +65,48 @@ async def CamDict() -> Response:
         }
     return jsonify(json_dict)
 
-def GetFrame():
+def GetFrame(path: str):
     while True:
+        SEM.acquire()
+        file = imread("image/" + path + "/test.jpg", IMREAD_COLOR)
+        SEM.release()
+        _b, file = imencode(".jpg", file)
+        file = file.tobytes()
+        yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+
+@Get # temporary code
+def LiveList() -> str:
+    temp : str = ""
+    for f in range(1, 4):
+        temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
+    return temp
+
+@GetPost
+def LiveCam() -> Response:
+    cam_name = request.form.get('path')
+    if cam_name not in CAMS_MAP:
+        return "Invalid Camera"
+    else:
         file = request.files["file"]
         if file.filename == "":
             return "No file selected"
         if file:
-            yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+            SEM.acquire()
+            file.save("image/" + cam_name + "/test.jpg")
+            SEM.release()
+            return "Frame obtained"
 
-@Get
-def Live() -> Response:
-    #render_template('index.html')
-    return Response(GetFrame(), mimetype="multipart/x-mixed-replace; boundary=frame")
+@GetPost
+def Live(cams) -> Response:
+    # print(CAMERAMODULE.ReturnEnum(cams))
+    status: str = CAMERAMODULE.GetCamStat(CAMERAMODULE.ReturnEnum(cams))
+    if cams not in CAMS_MAP:
+        return "Invalid Camera"
+    if status == "Offline":
+        return "Camera Offline"
+    else:
+        return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
+
 
 @GetPost
 def CameraSetup() -> Response:
@@ -79,7 +117,12 @@ def CameraSetup() -> Response:
         return "Server full, no more cameras can be used"
     else:
         return f"{cam_enum}"
-    #return "Cam Info obtained"
+
+@GetPost
+def CloseConnection() -> str:
+    cam_enum : CameraModuleEnum = CAMERAMODULE.ReturnEnum(request.get_json())
+    CAMERAMODULE.DisableCam(cam_enum)
+    return "Connection closed"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
