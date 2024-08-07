@@ -11,6 +11,8 @@ from flask import jsonify, Response, request
 from os import getenv
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
+from sys import stderr  # remove this line
+
 
 # load the environment variables
 load_dotenv()
@@ -21,6 +23,11 @@ HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 CAMERAMODULE : CameraModule = CameraModule()
 
 CAMERAMODULE.GenerateCamDict()
+
+# unordered map
+CAMS_MAP : dict[str, CameraModuleEnum] = {}
+for key in CameraModuleEnum:
+    CAMS_MAP[key.name] = key
 
 # Centralised computing
 @Get
@@ -64,10 +71,20 @@ def GetFrame():
             return "No file selected"
         if file:
             yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+            
+@Get # temporary code
+def LiveList() -> str:
+    temp : str = ""
+    for f in range(1, 4):
+        temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
+    return temp
 
-@Get
-def Live() -> Response:
-    return Response(GetFrame(), mimetype="multipart/x-mixed-replace; boundary=frame")
+@Get # temporary code
+def Live(cams) -> str:
+    if cams not in CAMS_MAP:
+        return "Invalid Camera"
+    print(CAMS_MAP[cams], file=stderr)
+    return cams
 
 @GetPost
 def CameraLocation() -> Response:
