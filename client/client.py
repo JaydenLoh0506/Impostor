@@ -6,6 +6,7 @@
 # - k_constant_variable
 # - FunctionName
 
+import signal
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
@@ -91,6 +92,12 @@ def CloseConnection() -> None:
 #     video : any = GetCamFootage(CONFIG_IP)
 #     response : str = RESTFULCLIENT.PostFile(url, video)
     #print(response)
+
+def SignalHandler(sig, frame) -> None:
+    CloseConnection()
+    exit()
+
+signal.signal(signal.SIGINT, SignalHandler)
 
 if __name__ == "__main__":
     ServerStatus()
