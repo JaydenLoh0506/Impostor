@@ -67,7 +67,7 @@ class CameraModule:
                     if line.startswith("IP:"):
                         self.cam_[2] = line.split(" ")[1]
                         break
-                raise ValueError("IP entry not found in config file.")
+                return True
         except FileNotFoundError:
             return False
         except Exception as e:

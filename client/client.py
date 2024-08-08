@@ -6,13 +6,13 @@
 # - k_constant_variable
 # - FunctionName
 
-import sys
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
 from camera_lib import CameraModule, CameraModuleEnum
 from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
 from cv2.typing import MatLike
+from sys import exit
 
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
@@ -30,7 +30,7 @@ def ServerStatus() -> None:
             RESTFULCLIENT.server_api_ = True
     except Exception as e:
         #print(e)
-        sys.exit("Server is offline")
+        exit("Server is offline")
 
 #Set camera IP and location
 def CameraSetup() -> None:

@@ -40,6 +40,7 @@ class CallbackFunctionRoute(Enum):
     CamDict = "/camdict"
     TestDict = "/testdict"
     CameraSetup = "/camerasetup"
+    FaceRecognition = "/facerecognition"
     CloseConnection = "/closeconnection"
 
 # dict[function_name, route]

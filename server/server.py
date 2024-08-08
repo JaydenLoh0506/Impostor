@@ -8,7 +8,7 @@
 
 from flask_lib import Get, APP, WebhookSend, GetPost
 from flask import jsonify, Response, request, render_template
-from os import getenv
+from os import getenv, makedirs
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
 from cv2 import imencode, IMREAD_COLOR, imread
@@ -117,6 +117,22 @@ def CameraSetup() -> Response:
         return "Server full, no more cameras can be used"
     else:
         return f"{cam_enum}"
+    
+@GetPost
+def FaceRecognition() -> Response:
+    face_path : str = request.form.get("path")
+    file_name : str = (face_path.split("/image\\", 1)[1]).split("\\")
+    name : str = file_name[0]
+    makedirs("image/" + name, exist_ok=True)
+    file = request.files["file"]
+    if file.filename == "":
+            return "No file selected"
+    if file:
+        SEM.acquire()
+        print(file_name[1])
+        file.save("image/" + name + "/" + file_name[1])
+        SEM.release()
+        return "Frame obtained"
 
 @GetPost
 def CloseConnection() -> str:
