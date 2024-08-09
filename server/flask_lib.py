@@ -20,7 +20,7 @@
 # pip install Flask
 # APP.run() will run the server
 
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify, Response, request
 from functools import wraps
 from enum import Enum, unique
 from aiohttp import ClientSession
@@ -32,7 +32,16 @@ from discord import Webhook, Embed, File
 class CallbackFunctionRoute(Enum):
     ApiService = "/api"
     Index = "/"
-    Test2 = "/test2"
+    Test = "/test"
+    TestComms = "/testcomms"
+    LiveList = "/live"
+    Live = "/live/<cams>"
+    LiveCam = "/livecam"
+    CamDict = "/camdict"
+    TestDict = "/testdict"
+    CameraSetup = "/camerasetup"
+    FaceRecognition = "/facerecognition"
+    CloseConnection = "/closeconnection"
 
 # dict[function_name, route]
 CALLBACK_FUNCTION_ROUTE : dict[str, str] = {i.name : i.value for i in CallbackFunctionRoute}
@@ -85,7 +94,7 @@ async def WebhookSend(webhook_url : str, *, content : str) -> None:
     async with ClientSession() as session:
         WEBHOOK = Webhook.from_url(webhook_url, session=session)
         await WEBHOOK.send(content=content)
-
+        
 # Service Functions
 @Get 
 def ApiService() -> Response:

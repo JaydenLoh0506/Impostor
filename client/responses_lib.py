@@ -1,5 +1,7 @@
 # include this file at the top of your main file
 
+# [WARNING] Update Service Dict requires try and except block
+
 # this file is a library for client requests
 # it includes functions for client requests
 
@@ -22,7 +24,7 @@
 # Python Version : Python 3.12.1
 # Date : 2024-07-07
 # Requests Version : 2.32.3
-# Software version : 0.1.1
+# Software version : 0.1.3
 
 # arguments rules
 # json_dict : dict[str, str]
@@ -32,20 +34,31 @@
 # import this file in your main file
 
 from requests import post, Response, get # type: ignore
-from enum import Enum, unique   
+from enum import Enum, unique  
+#from flask import jsonify 
 
 # Enum for API Service must match the server
 @unique # ignore type convention due to enum using VariableName
 class ApiServiceEnum(Enum):
     ApiService = "ApiService"
     Index = "Index"
-    Test2 = "Test2"
+    Test = "Test"
+    TestComms = "TestComms"
+    LiveCam = "LiveCam"
+    CameraSetup = "CameraSetup"
+    CloseConnection = "CloseConnection"
+    FaceRecognition = "FaceRecognition"
 
-API_SERVICE_DICT : dict[ApiServiceEnum, str]
+API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
-    ApiServiceEnum.ApiService : "Offered Service",
-    ApiServiceEnum.Index : "Main Web",
-    ApiServiceEnum.Test2 : "Testing 2"
+    ApiServiceEnum.ApiService : (False,"Offered Service"),
+    ApiServiceEnum.Index : (True,"Main Web"),
+    ApiServiceEnum.Test : (False,"Internal Verification"),
+    ApiServiceEnum.TestComms : (True,"Test Server Communication"),
+    ApiServiceEnum.LiveCam : (False,"Live Cam"),
+    ApiServiceEnum.CameraSetup : (True, "Camera Setup"),
+    ApiServiceEnum.CloseConnection : (True, "Close Connection"),
+    ApiServiceEnum.FaceRecognition : (True, "Face Recognition")
 }
 
 class RestfulClient:
@@ -54,7 +67,8 @@ class RestfulClient:
         self.server_ip_ : str = server_ip
         self.server_port_ : int = server_port
         self.service_dict_ : dict[str, str]
-        self.UpdateServiceDict()
+        self.server_api_ : bool = False
+        #self.UpdateServiceDict() Can crash if server is not running
         
     # SETTERS
     def UpdateServerIp(self, server_ip : str) -> None:
@@ -85,10 +99,15 @@ class RestfulClient:
     def GetText(self, url : str) -> str:
         response : Response = get(url=url)
         return response.text
+    
+    # Post Text Response
+    def PostText(self, url : str, text : str) -> str:
+        response : Response = post(url=url, data=text)
+        return response.text
 
     # Post File Function
-    def PostFile(self, url : str, file) -> str:
-        response : Response = post(url=url, files={"file": file})
+    def PostFile(self, url : str, path, file) -> str:
+        response : Response = post(url=url, data={"path": path}, files={"file": file})
         return response.text
 
     # Get File Function
@@ -97,9 +116,6 @@ class RestfulClient:
         return response.text
     
     # Update Service Dict
-    def UpdateServiceDict(self) -> bool:
+    def UpdateServiceDict(self) -> None:
+        """Require try and except block"""
         self.service_dict_ = self.GetJson(self.CreateUrl("/api")) # First Route must be /api is fixed
-        
-        if self.service_dict_:
-            return True
-        return False
