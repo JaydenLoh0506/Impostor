@@ -33,6 +33,7 @@ class CameraModuleEnum(Enum):
     cam1_ : str = "cams1"
     cam2_ : str = "cams2"
     cam3_ : str = "cams3"
+    none_ : None = None
     
 class CameraObject:
     def __init__(self, name: str = "", location: str = "", status: str = "") -> None:
@@ -41,7 +42,7 @@ class CameraObject:
         self.status_ : str = status
         
 class SelfCameraObject:
-    def __init__(self, enum : CameraModuleEnum, ip : str) -> None:
+    def __init__(self, *, enum : CameraModuleEnum = CameraModuleEnum.none_, object : CameraObject = CameraObject(), ip : str = "") -> None:
         self.enum_ : CameraModuleEnum = enum
         self.object_ : CameraObject = CameraObject()
         self.ip_ : str = ip
@@ -181,11 +182,11 @@ class CameraModule:
         self.ToggleCamStatus(cam_enum)
         self.cam_dict_[cam_enum].location_ = ""
 
-    # def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
-    #     cam_enum  : CameraModuleEnum | None = None
-    #     for key in CameraModuleEnum:
-    #         if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
-    #             cam_enum = key
-    #             break
-    #     return cam_enum
+    def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
+        cam_enum  : CameraModuleEnum | None = None
+        for key in CameraModuleEnum:
+            if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
+                cam_enum = key
+                break
+        return cam_enum
     
