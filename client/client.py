@@ -43,11 +43,11 @@ def CameraSetup() -> None:
     if CAMERA_MODULE.read_config(CONFIG_PATH):
         print("Camera IP and Location obtained")
         url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CameraSetup.value])
-        response : str = RESTFULCLIENT.PostCam(url, CAMERA_MODULE.cam_[1].location_)
+        response : str = RESTFULCLIENT.PostCam(url, CAMERA_MODULE.cam_.object_.location_)
         cam_enum : CameraModuleEnum = CAMERA_MODULE.ReturnEnum(response)
-        CAMERA_MODULE.cam_[0] = cam_enum
-        CAMERA_MODULE.cam_[1].name_ = cam_enum.value
-        CAMERA_MODULE.cam_[1].status = "Online"
+        CAMERA_MODULE.cam_.enum_ = cam_enum
+        CAMERA_MODULE.cam_.object_.name_ = cam_enum.value
+        CAMERA_MODULE.cam_.object_.status_ = "Online"
     else:
         print("Failed to get IP and Location")
 
@@ -66,7 +66,7 @@ def SendVideo() -> None:
     # url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Live.value + '/' + CAMERA_MODULE.cam_[1].name_])
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
     #video : any = CAMERA_MODULE.GetCamFootage(CAMERA_MODULE.cam_[2])
-    camera : VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_[2])
+    camera : VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
     success : bool
     frame : cv2.UMat | MatLike
     ret : bool
@@ -85,7 +85,7 @@ def SendVideo() -> None:
             # results = squeeze(results.render())
             ret, buffer = cv2.imencode(".jpg", results)
             video = buffer.tobytes()
-            response : str = RESTFULCLIENT.PostFile(url, CAMERA_MODULE.cam_[1].name_, video)
+            response : str = RESTFULCLIENT.PostFile(url, CAMERA_MODULE.cam_.object_.name_, video)
             print(response)
     # response : str = RESTFULCLIENT.PostCam(url, 'test')
             #print("Sending")
