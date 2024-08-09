@@ -28,15 +28,6 @@ CAMERAMODULE.GenerateCamDict()
 # unordered map
 CAMS_MAP : dict[str, CameraModuleEnum] = {}
 for key in CameraModuleEnum:
-<<<<<<< HEAD
-    CAMS_MAP[key.name] = key
-=======
-    CAMS_MAP[key.value] = key
->>>>>>> b7ea6d2b10338dddd42a8adab79381724457cb5f
-
-# unordered map
-CAMS_MAP : dict[str, CameraModuleEnum] = {}
-for key in CameraModuleEnum:
     CAMS_MAP[key.value] = key
 
 # Centralised computing
