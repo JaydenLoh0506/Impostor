@@ -89,12 +89,6 @@ class RestfulClient:
     def PostGetJson(self, url : str, json_dict : dict[str, str]) -> dict[str, str]:
         response : Response = post(url=url, json=json_dict)
         return response.json()
-    
-    #Post camera info
-    def PostCam(self, url: str, cam_):
-        #cam_ = jsonify(cam_)
-        response : Response = post(url=url, json=cam_)
-        return response.text
 
     # Get Json Response
     def GetJson(self, url : str) -> dict[str, str]:
@@ -104,6 +98,11 @@ class RestfulClient:
     # Get Text Response
     def GetText(self, url : str) -> str:
         response : Response = get(url=url)
+        return response.text
+    
+    # Post Text Response
+    def PostText(self, url : str, text : str) -> str:
+        response : Response = post(url=url, data=text)
         return response.text
 
     # Post File Function

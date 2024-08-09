@@ -178,11 +178,11 @@ class CameraModule:
         self.ToggleCamStatus(cam_enum)
         self.cam_dict_[cam_enum].location_ = ""
 
-    def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
-        cam_enum  : CameraModuleEnum | None = None
-        for key in CameraModuleEnum:
-            if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
-                cam_enum = key
-                break
-        return cam_enum
+    # def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
+    #     cam_enum  : CameraModuleEnum | None = None
+    #     for key in CameraModuleEnum:
+    #         if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
+    #             cam_enum = key
+    #             break
+    #     return cam_enum
     

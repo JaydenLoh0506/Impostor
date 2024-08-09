@@ -14,7 +14,7 @@ from responses_lib import RestfulClient, ApiServiceEnum
 from camera_lib import CameraModule, CameraModuleEnum
 # from cv2 import VideoCapture, UMat, imencode, putText, FONT_HERSHEY_SIMPLEX, LINE_AA
 from cv2.typing import MatLike
-from ultralytics import YOLO
+from ultralytics import YOLO # type: ignore
 from math import ceil
 from sys import exit
 
@@ -27,6 +27,11 @@ MODEL = YOLO('yolov8n.pt')
 CONFIG_PATH: str = "config.txt"
 #CONFIG_IP: str = ReadIP(CONFIG_PATH)
 #MODEL = YOLO('yolo')
+
+# Unordered Map
+UMAPCAMS : dict[str, CameraModuleEnum] = {}
+for cam in CameraModuleEnum:
+    UMAPCAMS[cam.name] = cam
 
 #Check server status
 def ServerStatus() -> None:
@@ -43,8 +48,9 @@ def CameraSetup() -> None:
     if CAMERA_MODULE.read_config(CONFIG_PATH):
         print("Camera IP and Location obtained")
         url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CameraSetup.value])
-        response : str = RESTFULCLIENT.PostCam(url, CAMERA_MODULE.cam_.object_.location_)
-        cam_enum : CameraModuleEnum = CAMERA_MODULE.ReturnEnum(response)
+        temp_dict : dict[str, str] = {'location': f'{CAMERA_MODULE.cam_.object_.location_}'}
+        response : str = RESTFULCLIENT.PostJson(url, temp_dict)
+        cam_enum : CameraModuleEnum = UMAPCAMS[response]
         CAMERA_MODULE.cam_.enum_ = cam_enum
         CAMERA_MODULE.cam_.object_.name_ = cam_enum.value
         CAMERA_MODULE.cam_.object_.status_ = "Online"
@@ -66,7 +72,7 @@ def SendVideo() -> None:
     # url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Live.value + '/' + CAMERA_MODULE.cam_[1].name_])
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
     #video : any = CAMERA_MODULE.GetCamFootage(CAMERA_MODULE.cam_[2])
-    camera : VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
+    camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
     success : bool
     frame : cv2.UMat | MatLike
     ret : bool
@@ -136,7 +142,8 @@ def Detection(frame):
 
 def CloseConnection() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CloseConnection.value])
-    response : str = RESTFULCLIENT.PostCam(url, f'{CAMERA_MODULE.cam_[0]}')
+    temp_dict : dict[str, str] = {'enum' : f'{CAMERA_MODULE.cam_.enum_}'}
+    response : str = RESTFULCLIENT.PostJson(url, temp_dict)
     print(response)
 
 # def SendVideo() -> None:

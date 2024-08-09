@@ -26,9 +26,9 @@ SEM : Semaphore = Semaphore()
 CAMERAMODULE.GenerateCamDict()
 
 # unordered map
-CAMS_MAP : dict[str, CameraModuleEnum] = {}
+UMAPCAMS : dict[str, CameraModuleEnum] = {}
 for key in CameraModuleEnum:
-    CAMS_MAP[key.value] = key
+    UMAPCAMS[key.value] = key
 
 # Centralised computing
 @Get
@@ -82,9 +82,9 @@ def LiveList() -> str:
     return temp
 
 @GetPost
-def LiveCam() -> Response:
+def LiveCam() -> str:
     cam_name = request.form.get('path')
-    if cam_name not in CAMS_MAP:
+    if cam_name not in UMAPCAMS:
         return "Invalid Camera"
     else:
         file = request.files["file"]
@@ -95,13 +95,14 @@ def LiveCam() -> Response:
             file.save("image/" + cam_name + "/test.jpg")
             SEM.release()
             return "Frame obtained"
+    return "Error"
 
 @GetPost
-def Live(cams) -> Response:
+def Live(cams) -> Response | str:
     # print(CAMERAMODULE.ReturnEnum(cams))
-    status: str = CAMERAMODULE.GetCamStat(CAMERAMODULE.ReturnEnum(cams))
-    if cams not in CAMS_MAP:
+    if cams not in UMAPCAMS:
         return "Invalid Camera"
+    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[cams])
     if status == "Offline":
         return "Camera Offline"
     else:
@@ -109,9 +110,9 @@ def Live(cams) -> Response:
 
 
 @GetPost
-def CameraSetup() -> Response:
+def CameraSetup() -> Response | str:
     cam_enum : CameraModuleEnum | None
-    cam_info = request.get_json()
+    cam_info : str = request.get_json()['location']
     cam_enum = CAMERAMODULE.SetCamLocation(cam_info)
     if cam_enum == None:
         return "Server full, no more cameras can be used"
@@ -119,9 +120,9 @@ def CameraSetup() -> Response:
         return f"{cam_enum}"
     
 @GetPost
-def FaceRecognition() -> Response:
-    face_path : str = request.form.get("path")
-    file_name : str = (face_path.split("image/", 1)[1]).split("/")
+def FaceRecognition() -> Response | str:
+    face_path : str = request.form.get("path") # type: ignore
+    file_name : list[str] = (face_path.split("image/", 1)[1]).split("/")
     name : str = file_name[0]
     makedirs("image/" + name, exist_ok=True)
     file = request.files["file"]
@@ -131,13 +132,14 @@ def FaceRecognition() -> Response:
         SEM.acquire()
         print(file_name[1])
         # file.save("image/" + name + "/" + file_name[1])
-        file.save(file_path)
+        file.save(face_path)
         SEM.release()
         return "Frame obtained"
+    return "Error"
 
 @GetPost
 def CloseConnection() -> str:
-    cam_enum : CameraModuleEnum = CAMERAMODULE.ReturnEnum(request.get_json())
+    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum']]
     CAMERAMODULE.DisableCam(cam_enum)
     return "Connection closed"
 
