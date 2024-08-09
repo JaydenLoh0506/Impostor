@@ -33,6 +33,7 @@ class CameraModuleEnum(Enum):
     cam1_ : str = "cams1"
     cam2_ : str = "cams2"
     cam3_ : str = "cams3"
+    none_ : None = None
     
 class CameraObject:
     def __init__(self, name: str = "", location: str = "", status: str = "") -> None:
@@ -41,7 +42,7 @@ class CameraObject:
         self.status_ : str = status
         
 class SelfCameraObject:
-    def __init__(self, *, enum : CameraModuleEnum, object : CameraObject, ip : str) -> None:
+    def __init__(self, *, enum : CameraModuleEnum = CameraModuleEnum.none_, object : CameraObject = CameraObject(), ip : str = "") -> None:
         self.enum_ : CameraModuleEnum = enum
         self.object_ : CameraObject = object
         self.ip_ : str = ip
