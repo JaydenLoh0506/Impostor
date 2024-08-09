@@ -36,9 +36,12 @@ class CallbackFunctionRoute(Enum):
     TestComms = "/testcomms"
     LiveList = "/live"
     Live = "/live/<cams>"
+    LiveCam = "/livecam"
     CamDict = "/camdict"
     TestDict = "/testdict"
-    CameraLocation = "/cameralocation"
+    CameraSetup = "/camerasetup"
+    FaceRecognition = "/facerecognition"
+    CloseConnection = "/closeconnection"
 
 # dict[function_name, route]
 CALLBACK_FUNCTION_ROUTE : dict[str, str] = {i.name : i.value for i in CallbackFunctionRoute}

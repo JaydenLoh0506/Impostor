@@ -7,12 +7,12 @@
 # - FunctionName
 
 from flask_lib import Get, APP, WebhookSend, GetPost
-from flask import jsonify, Response, request
-from os import getenv
+from flask import jsonify, Response, request, render_template
+from os import getenv, makedirs
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
-from sys import stderr  # remove this line
-
+from cv2 import imencode, IMREAD_COLOR, imread
+from threading import Semaphore
 
 # load the environment variables
 load_dotenv()
@@ -21,13 +21,23 @@ WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
 HOST_IP : str = str(getenv('SERVER_IP'))
 HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 CAMERAMODULE : CameraModule = CameraModule()
+SEM : Semaphore = Semaphore()
 
 CAMERAMODULE.GenerateCamDict()
 
 # unordered map
 CAMS_MAP : dict[str, CameraModuleEnum] = {}
 for key in CameraModuleEnum:
+<<<<<<< HEAD
     CAMS_MAP[key.name] = key
+=======
+    CAMS_MAP[key.value] = key
+>>>>>>> b7ea6d2b10338dddd42a8adab79381724457cb5f
+
+# unordered map
+CAMS_MAP : dict[str, CameraModuleEnum] = {}
+for key in CameraModuleEnum:
+    CAMS_MAP[key.value] = key
 
 # Centralised computing
 @Get
@@ -64,14 +74,15 @@ async def CamDict() -> Response:
         }
     return jsonify(json_dict)
 
-def GetFrame():
+def GetFrame(path: str):
     while True:
-        file = request.files["file"]
-        if file.filename == "":
-            return "No file selected"
-        if file:
-            yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
-            
+        SEM.acquire()
+        file = imread("image/" + path + "/test.jpg", IMREAD_COLOR)
+        SEM.release()
+        _b, file = imencode(".jpg", file)
+        file = file.tobytes()
+        yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+
 @Get # temporary code
 def LiveList() -> str:
     temp : str = ""
@@ -79,18 +90,65 @@ def LiveList() -> str:
         temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
     return temp
 
-@Get # temporary code
-def Live(cams) -> str:
-    if cams not in CAMS_MAP:
+@GetPost
+def LiveCam() -> Response:
+    cam_name = request.form.get('path')
+    if cam_name not in CAMS_MAP:
         return "Invalid Camera"
-    print(CAMS_MAP[cams], file=stderr)
-    return cams
+    else:
+        file = request.files["file"]
+        if file.filename == "":
+            return "No file selected"
+        if file:
+            SEM.acquire()
+            file.save("image/" + cam_name + "/test.jpg")
+            SEM.release()
+            return "Frame obtained"
 
 @GetPost
-def CameraLocation() -> Response:
+def Live(cams) -> Response:
+    # print(CAMERAMODULE.ReturnEnum(cams))
+    status: str = CAMERAMODULE.GetCamStat(CAMERAMODULE.ReturnEnum(cams))
+    if cams not in CAMS_MAP:
+        return "Invalid Camera"
+    if status == "Offline":
+        return "Camera Offline"
+    else:
+        return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+
+@GetPost
+def CameraSetup() -> Response:
+    cam_enum : CameraModuleEnum | None
     cam_info = request.get_json()
-    print(cam_info)
-    return "Cam Info obtained"
+    cam_enum = CAMERAMODULE.SetCamLocation(cam_info)
+    if cam_enum == None:
+        return "Server full, no more cameras can be used"
+    else:
+        return f"{cam_enum}"
+    
+@GetPost
+def FaceRecognition() -> Response:
+    face_path : str = request.form.get("path")
+    file_name : str = (face_path.split("image/", 1)[1]).split("/")
+    name : str = file_name[0]
+    makedirs("image/" + name, exist_ok=True)
+    file = request.files["file"]
+    if file.filename == "":
+            return "No file selected"
+    if file:
+        SEM.acquire()
+        print(file_name[1])
+        # file.save("image/" + name + "/" + file_name[1])
+        file.save(file_path)
+        SEM.release()
+        return "Frame obtained"
+
+@GetPost
+def CloseConnection() -> str:
+    cam_enum : CameraModuleEnum = CAMERAMODULE.ReturnEnum(request.get_json())
+    CAMERAMODULE.DisableCam(cam_enum)
+    return "Connection closed"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)

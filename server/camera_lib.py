@@ -25,7 +25,7 @@
 # Date : 2024-08-04
 
 from enum import Enum, unique
-from cv2 import VideoCapture, UMat, imencode
+from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
 from cv2.typing import MatLike
 
 @unique
@@ -48,13 +48,13 @@ class CameraModule:
         self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ = [] #type: ignore #list[CameraModuleEnum, CameraObject, str]
+        self.cam_ = ['', CameraObject, ''] #type: ignore #list[CameraModuleEnum, CameraObject, str]
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
         for key in CameraModuleEnum:
             self.cam_dict_[key] = CameraObject(key.value, "", "Offline")
-    
+
     #Get camera IP
     def ReadIP(self, file_path) -> bool:
         """CLIENT function"""
@@ -94,13 +94,14 @@ class CameraModule:
                 if ip_address is None or location is None:
                     raise ValueError("Config file is missing IP or Location entries.")
                 else:
+                    self.cam_[1].location_ = location
                     self.cam_[2] = ip_address
-                    self.cam_[1].location = location
                     return True
 
         except FileNotFoundError:
             return False
         except Exception as e:
+            print(e)
             return False
 
     #Change camera IP
@@ -160,22 +161,22 @@ class CameraModule:
         else:
             self.cam_dict_[cams].status_ = "Offline"
 
-    #Get camera footage
-    def GetCamFootage(self, source: str) -> any:
-        """SERVER function"""
-        camera : VideoCapture = VideoCapture(source)
-        success : bool
-        frame : UMat | MatLike
-        ret : bool
-        video = None
-        while True:
-            success, frame = camera.read()
-            if not success:
-                print("Failed to read frame")
+    def SetCamLocation(self, location: str) -> CameraModuleEnum | None:
+        cam_enum : CameraModuleEnum = self.DistributeCam() #type: ignore
+        if cam_enum != None:
+            self.ToggleCamStatus(cam_enum)
+            self.cam_dict_[cam_enum].location_ = location
+        return cam_enum
+
+    def DisableCam(self, cam_enum: CameraModuleEnum) -> None:
+        self.ToggleCamStatus(cam_enum)
+        self.cam_dict_[cam_enum].location_ = ""
+
+    def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
+        cam_enum  : CameraModuleEnum | None = None
+        for key in CameraModuleEnum:
+            if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
+                cam_enum = key
                 break
-            else:
-                ret, buffer = imencode(".jpg", frame)
-                video = buffer.tobytes()
-                return video
-        return video
+        return cam_enum
     

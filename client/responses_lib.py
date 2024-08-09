@@ -44,8 +44,10 @@ class ApiServiceEnum(Enum):
     Index = "Index"
     Test = "Test"
     TestComms = "TestComms"
-    Live = "Live"
-    CameraLocation = "CameraLocation"
+    LiveCam = "LiveCam"
+    CameraSetup = "CameraSetup"
+    CloseConnection = "CloseConnection"
+    FaceRecognition = "FaceRecognition"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
@@ -53,8 +55,10 @@ API_SERVICE_DICT = {
     ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.Live : (False,"Live Cam"),
-    ApiServiceEnum.CameraLocation : (True, "Camera Location")
+    ApiServiceEnum.LiveCam : (False,"Live Cam"),
+    ApiServiceEnum.CameraSetup : (True, "Camera Setup"),
+    ApiServiceEnum.CloseConnection : (True, "Close Connection"),
+    ApiServiceEnum.FaceRecognition : (True, "Face Recognition")
 }
 
 class RestfulClient:
@@ -103,8 +107,8 @@ class RestfulClient:
         return response.text
 
     # Post File Function
-    def PostFile(self, url : str, file) -> str:
-        response : Response = post(url=url, files={"file": file})
+    def PostFile(self, url : str, path, file) -> str:
+        response : Response = post(url=url, data={"path": path}, files={"file": file})
         return response.text
 
     # Get File Function
