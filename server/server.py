@@ -25,10 +25,14 @@ SEM : Semaphore = Semaphore()
 
 CAMERAMODULE.GenerateCamDict()
 
-# unordered map
+# Unordered Map
 UMAPCAMS : dict[str, CameraModuleEnum] = {}
-for key in CameraModuleEnum:
-    UMAPCAMS[key.value] = key
+for cam in CameraModuleEnum:
+    UMAPCAMS[cam.name] = cam
+
+UMAPCAMS2: dict[str, CameraModule] = {}
+for cam in CameraModuleEnum:
+    UMAPCAMS2[cam.value] = cam #type: ignore
 
 # Centralised computing
 @Get
@@ -71,7 +75,7 @@ def GetFrame(path: str):
         file = imread("image/" + path + "/test.jpg", IMREAD_COLOR)
         SEM.release()
         _b, file = imencode(".jpg", file)
-        file = file.tobytes()
+        file = file.tobytes() #type: ignore
         yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
 
 @Get # temporary code
@@ -84,6 +88,7 @@ def LiveList() -> str:
 @GetPost
 def LiveCam() -> str:
     cam_name = request.form.get('path')
+    cam_name = cam_name.split(".")[1] #type: ignore
     if cam_name not in UMAPCAMS:
         return "Invalid Camera"
     else:
@@ -92,17 +97,16 @@ def LiveCam() -> str:
             return "No file selected"
         if file:
             SEM.acquire()
-            file.save("image/" + cam_name + "/test.jpg")
+            file.save("image/" + UMAPCAMS[cam_name].value + "/test.jpg")
             SEM.release()
             return "Frame obtained"
     return "Error"
 
 @GetPost
 def Live(cams) -> Response | str:
-    # print(CAMERAMODULE.ReturnEnum(cams))
-    if cams not in UMAPCAMS:
+    if cams not in UMAPCAMS2:
         return "Invalid Camera"
-    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[cams])
+    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[f'{UMAPCAMS2[cams]}'.split(".")[1]])
     if status == "Offline":
         return "Camera Offline"
     else:
@@ -131,7 +135,6 @@ def FaceRecognition() -> Response | str:
     if file:
         SEM.acquire()
         print(file_name[1])
-        # file.save("image/" + name + "/" + file_name[1])
         file.save(face_path)
         SEM.release()
         return "Frame obtained"
@@ -139,7 +142,7 @@ def FaceRecognition() -> Response | str:
 
 @GetPost
 def CloseConnection() -> str:
-    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum']]
+    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum'].split(".")[1]]
     CAMERAMODULE.DisableCam(cam_enum)
     return "Connection closed"
 
@@ -148,7 +151,6 @@ def flask_run():
     
 def main():
     flask_run()
-    #Live()
     
 if __name__ == "__main__":
     main()

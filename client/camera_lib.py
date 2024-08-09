@@ -25,8 +25,6 @@
 # Date : 2024-08-04
 
 from enum import Enum, unique
-from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
-from cv2.typing import MatLike
 
 @unique
 class CameraModuleEnum(Enum):
@@ -44,7 +42,7 @@ class CameraObject:
 class SelfCameraObject:
     def __init__(self, *, enum : CameraModuleEnum = CameraModuleEnum.none_, object : CameraObject = CameraObject(), ip : str = "") -> None:
         self.enum_ : CameraModuleEnum = enum
-        self.object_ : CameraObject = CameraObject()
+        self.object_ : CameraObject = object
         self.ip_ : str = ip
         
 class CameraModule:
@@ -55,7 +53,7 @@ class CameraModule:
         self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ : SelfCameraObject
+        self.cam_ : SelfCameraObject = SelfCameraObject()
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
@@ -63,6 +61,7 @@ class CameraModule:
             self.cam_dict_[key] = CameraObject(key.value, "", "Offline")
 
     #Get camera IP
+    ##NOT USED
     def ReadIP(self, file_path) -> bool:
         """CLIENT function"""
         try:
@@ -79,8 +78,9 @@ class CameraModule:
             return False
         except Exception as e:
             return False
-        
-    def read_config(self, file_path) -> str:
+    
+    #Read IP and Location from file
+    def read_config(self, file_path):
         try:
             with open(file_path, 'r') as file:
                 lines = file.readlines()
@@ -101,19 +101,17 @@ class CameraModule:
                 if ip_address is None or location is None:
                     raise ValueError("Config file is missing IP or Location entries.")
                 else:
-                    return location, ip_address
-                    # self.cam_.object_.location_ = location
-                    # self.cam_.ip_ = ip_address
-                    # return True
+                    self.cam_.object_.location_ = location
+                    self.cam_.ip_ = ip_address
+                    return True
 
         except FileNotFoundError:
-            return "",""
-            # return False
+            return False
         except Exception as e:
             print(e)
-            return "",""
-            # return False
-
+            return False
+        
+    ##NOT USED
     #Change camera IP
     def ChangeIP(self, file_path : str, new_ip : str):
         """CLIENT function"""
@@ -171,6 +169,7 @@ class CameraModule:
         else:
             self.cam_dict_[cams].status_ = "Offline"
 
+    #Set camera location (server side)
     def SetCamLocation(self, location: str) -> CameraModuleEnum | None:
         cam_enum : CameraModuleEnum = self.DistributeCam() #type: ignore
         if cam_enum != None:
@@ -178,10 +177,12 @@ class CameraModule:
             self.cam_dict_[cam_enum].location_ = location
         return cam_enum
 
+    #Set camera to offline after use (server)
     def DisableCam(self, cam_enum: CameraModuleEnum) -> None:
         self.ToggleCamStatus(cam_enum)
         self.cam_dict_[cam_enum].location_ = ""
 
+    ##Not Used
     def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
         cam_enum  : CameraModuleEnum | None = None
         for key in CameraModuleEnum:
