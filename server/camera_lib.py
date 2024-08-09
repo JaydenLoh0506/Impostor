@@ -39,7 +39,13 @@ class CameraObject:
         self.name_ : str = name
         self.location_ : str = location
         self.status_ : str = status
-
+        
+class SelfCameraObject:
+    def __init__(self, *, enum : CameraModuleEnum, object : CameraObject, ip : str) -> None:
+        self.enum_ : CameraModuleEnum = enum
+        self.object_ : CameraObject = object
+        self.ip_ : str = ip
+        
 class CameraModule:
     def __init__(self) -> None:
         # CLIENT will send self location to server
@@ -48,7 +54,7 @@ class CameraModule:
         self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ = ['', CameraObject, ''] #type: ignore #list[CameraModuleEnum, CameraObject, str]
+        self.cam_ : SelfCameraObject
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
@@ -65,7 +71,7 @@ class CameraModule:
                     line = line.strip()
                     # Extract the IP address from the content
                     if line.startswith("IP:"):
-                        self.cam_[2] = line.split(" ")[1]
+                        self.cam_.ip_ = line.split(" ")[1]
                         break
                 return True
         except FileNotFoundError:
@@ -94,8 +100,8 @@ class CameraModule:
                 if ip_address is None or location is None:
                     raise ValueError("Config file is missing IP or Location entries.")
                 else:
-                    self.cam_[1].location_ = location
-                    self.cam_[2] = ip_address
+                    self.cam_.object_.location_ = location
+                    self.cam_.ip_ = ip_address
                     return True
 
         except FileNotFoundError:
@@ -125,7 +131,7 @@ class CameraModule:
                 with open(file_path, 'w') as file:
                     file.write(new_content)
                     
-                self.cam_[2] = new_ip
+                self.cam_.ip_ = new_ip
             else:
                 raise ValueError("Invalid file format. Expected 'IP: <url>'.")
         except FileNotFoundError:
