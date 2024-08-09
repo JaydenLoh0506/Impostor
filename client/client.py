@@ -7,17 +7,22 @@
 # - FunctionName
 
 import signal
+import cv2
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
 from camera_lib import CameraModule, CameraModuleEnum
-from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
+# from cv2 import VideoCapture, UMat, imencode, putText, FONT_HERSHEY_SIMPLEX, LINE_AA
 from cv2.typing import MatLike
+from ultralytics import YOLO
+from math import ceil
 from sys import exit
 
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
 CAMERA_MODULE : CameraModule = CameraModule()
+MODEL = YOLO('yolov8n.pt')
+MODEL.classes = [0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
 CONFIG_PATH: str = "config.txt"
 #CONFIG_IP: str = ReadIP(CONFIG_PATH)
@@ -61,9 +66,9 @@ def SendVideo() -> None:
     # url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Live.value + '/' + CAMERA_MODULE.cam_[1].name_])
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
     #video : any = CAMERA_MODULE.GetCamFootage(CAMERA_MODULE.cam_[2])
-    camera : VideoCapture = VideoCapture(CAMERA_MODULE.cam_[2])
+    camera : VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_[2])
     success : bool
-    frame : UMat | MatLike
+    frame : cv2.UMat | MatLike
     ret : bool
     #video = None
     #cam_name : str = RESTFULCLIENT.PostCam(url, f'{CAMERA_MODULE.cam_[1].name_}')
@@ -75,12 +80,49 @@ def SendVideo() -> None:
             break
         else:
             # imshow('Webcam', frame)
-            ret, buffer = imencode(".jpg", frame)
+            results = Detection(frame)
+            # print(type(results))
+            # results = squeeze(results.render())
+            ret, buffer = cv2.imencode(".jpg", results)
             video = buffer.tobytes()
             response : str = RESTFULCLIENT.PostFile(url, CAMERA_MODULE.cam_[1].name_, video)
             print(response)
     # response : str = RESTFULCLIENT.PostCam(url, 'test')
             #print("Sending")
+
+def Detection(frame):
+
+    classNames = ['person', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe']
+
+    results = MODEL(frame, stream = True)
+    for r in results:
+        boxes = r.boxes
+
+        for box in boxes:
+            # bounding box
+            x1, y1, x2, y2 = box.xyxy[0]
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) # convert to int values
+
+            # put box in cam
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 255), 3)
+
+            # confidence
+            confidence = ceil((box.conf[0]*100))/100
+            print("Confidence --->",confidence)
+
+            # class name
+            cls = int(box.cls[0])
+            print("Class name -->", classNames[cls])
+
+            # object details
+            org = [x1, y1]
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            fontScale = 1
+            color = (255, 0, 0)
+            thickness = 2
+
+            cv2.putText(frame, classNames[cls], org, font, fontScale, color, thickness)
+    return frame
 
 def CloseConnection() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CloseConnection.value])

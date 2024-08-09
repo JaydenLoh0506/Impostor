@@ -57,7 +57,7 @@ def capture_photos() -> bool:
     """
     Capture 9 photos and save them with different brightness levels and instructions.
     """
-    base_path: str = "/image"
+    base_path: str = "image"
     
     source: str = ""
     if CAMERA_MODULE.ReadIP(CONFIG_PATH):
@@ -95,7 +95,8 @@ def capture_photos() -> bool:
 
     name: str = input("Enter your name: ")
 
-    user_dir: str = os.path.join(base_path, name)
+    user_dir: str = base_path + "/" + name
+    #user_dir: str = os.path.join(base_path, name)
     #os.makedirs(user_dir, exist_ok=True)
 
     brightness_values: list[int] = [-50, 0, 50]
@@ -122,10 +123,11 @@ def capture_photos() -> bool:
     for i, photo in enumerate(photos):
         for j, brightness in enumerate(brightness_values):
             adjusted_photo: np.ndarray = adjust_brightness(photo, brightness)
-            #adjusted_photo = cv2.imencode(".jpg", adjusted_photo)
-            #adjusted_photo = adjusted_photo.tobytes()
-            new_path: str = os.path.join(user_dir, f"photo_{i + 1}_brightness_{j + 1}.jpg")
-            #cv2.imwrite(new_path, adjusted_photo)
+            ret, adjusted_photo = cv2.imencode(".jpg", adjusted_photo)
+            adjusted_photo = adjusted_photo.tobytes()
+            new_path: str = user_dir + "/" + f"photo_{i + 1}_brightness_{j + 1}.jpg"
+            #new_path: str = os.path.join(user_dir, f"photo_{i + 1}_brightness_{j + 1}.jpg")
+            # cv2.imwrite(new_path, adjusted_photo)
             print(f"Saved {new_path}")
             url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_ [ApiServiceEnum.FaceRecognition.value])
             response : str = RESTFULCLIENT.PostFile(url, new_path, adjusted_photo)

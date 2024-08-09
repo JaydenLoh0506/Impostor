@@ -121,7 +121,7 @@ def CameraSetup() -> Response:
 @GetPost
 def FaceRecognition() -> Response:
     face_path : str = request.form.get("path")
-    file_name : str = (face_path.split("/image\\", 1)[1]).split("\\")
+    file_name : str = (face_path.split("image/", 1)[1]).split("/")
     name : str = file_name[0]
     makedirs("image/" + name, exist_ok=True)
     file = request.files["file"]
@@ -130,7 +130,8 @@ def FaceRecognition() -> Response:
     if file:
         SEM.acquire()
         print(file_name[1])
-        file.save("image/" + name + "/" + file_name[1])
+        # file.save("image/" + name + "/" + file_name[1])
+        file.save(file_path)
         SEM.release()
         return "Frame obtained"
 
