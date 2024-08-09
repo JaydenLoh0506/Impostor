@@ -34,7 +34,8 @@
 # import this file in your main file
 
 from requests import post, Response, get # type: ignore
-from enum import Enum, unique   
+from enum import Enum, unique  
+#from flask import jsonify 
 
 # Enum for API Service must match the server
 @unique # ignore type convention due to enum using VariableName
@@ -43,7 +44,10 @@ class ApiServiceEnum(Enum):
     Index = "Index"
     Test = "Test"
     TestComms = "TestComms"
-    Live = "Live"
+    LiveCam = "LiveCam"
+    CameraSetup = "CameraSetup"
+    CloseConnection = "CloseConnection"
+    FaceRecognition = "FaceRecognition"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
@@ -51,7 +55,10 @@ API_SERVICE_DICT = {
     ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.Live : (False,"Live Cam")
+    ApiServiceEnum.LiveCam : (False,"Live Cam"),
+    ApiServiceEnum.CameraSetup : (True, "Camera Setup"),
+    ApiServiceEnum.CloseConnection : (True, "Close Connection"),
+    ApiServiceEnum.FaceRecognition : (True, "Face Recognition")
 }
 
 class RestfulClient:
@@ -92,10 +99,15 @@ class RestfulClient:
     def GetText(self, url : str) -> str:
         response : Response = get(url=url)
         return response.text
+    
+    # Post Text Response
+    def PostText(self, url : str, text : str) -> str:
+        response : Response = post(url=url, data=text)
+        return response.text
 
     # Post File Function
-    def PostFile(self, url : str, file) -> str:
-        response : Response = post(url=url, files={"file": file})
+    def PostFile(self, url : str, path, file) -> str:
+        response : Response = post(url=url, data={"path": path}, files={"file": file})
         return response.text
 
     # Get File Function

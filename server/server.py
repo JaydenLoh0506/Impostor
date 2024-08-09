@@ -6,11 +6,13 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend
-from flask import jsonify, Response
-from os import getenv
+from flask_lib import Get, APP, WebhookSend, GetPost
+from flask import jsonify, Response, request, render_template
+from os import getenv, makedirs
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
+from cv2 import imencode, IMREAD_COLOR, imread
+from threading import Semaphore
 
 # load the environment variables
 load_dotenv()
@@ -19,8 +21,14 @@ WEBHOOK_URL : str = str(getenv('DISCORD_WEBHOOK'))
 HOST_IP : str = str(getenv('SERVER_IP'))
 HOST_PORT : int = int(str(getenv('SERVER_PORT')))
 CAMERAMODULE : CameraModule = CameraModule()
+SEM : Semaphore = Semaphore()
 
 CAMERAMODULE.GenerateCamDict()
+
+# unordered map
+UMAPCAMS : dict[str, CameraModuleEnum] = {}
+for key in CameraModuleEnum:
+    UMAPCAMS[key.value] = key
 
 # Centralised computing
 @Get
@@ -56,6 +64,84 @@ async def CamDict() -> Response:
             "status" : value.status_
         }
     return jsonify(json_dict)
+
+def GetFrame(path: str):
+    while True:
+        SEM.acquire()
+        file = imread("image/" + path + "/test.jpg", IMREAD_COLOR)
+        SEM.release()
+        _b, file = imencode(".jpg", file)
+        file = file.tobytes()
+        yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
+
+@Get # temporary code
+def LiveList() -> str:
+    temp : str = ""
+    for f in range(1, 4):
+        temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
+    return temp
+
+@GetPost
+def LiveCam() -> str:
+    cam_name = request.form.get('path')
+    if cam_name not in UMAPCAMS:
+        return "Invalid Camera"
+    else:
+        file = request.files["file"]
+        if file.filename == "":
+            return "No file selected"
+        if file:
+            SEM.acquire()
+            file.save("image/" + cam_name + "/test.jpg")
+            SEM.release()
+            return "Frame obtained"
+    return "Error"
+
+@GetPost
+def Live(cams) -> Response | str:
+    # print(CAMERAMODULE.ReturnEnum(cams))
+    if cams not in UMAPCAMS:
+        return "Invalid Camera"
+    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[cams])
+    if status == "Offline":
+        return "Camera Offline"
+    else:
+        return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+
+@GetPost
+def CameraSetup() -> Response | str:
+    cam_enum : CameraModuleEnum | None
+    cam_info : str = request.get_json()['location']
+    cam_enum = CAMERAMODULE.SetCamLocation(cam_info)
+    if cam_enum == None:
+        return "Server full, no more cameras can be used"
+    else:
+        return f"{cam_enum}"
+    
+@GetPost
+def FaceRecognition() -> Response | str:
+    face_path : str = request.form.get("path") # type: ignore
+    file_name : list[str] = (face_path.split("image/", 1)[1]).split("/")
+    name : str = file_name[0]
+    makedirs("image/" + name, exist_ok=True)
+    file = request.files["file"]
+    if file.filename == "":
+            return "No file selected"
+    if file:
+        SEM.acquire()
+        print(file_name[1])
+        # file.save("image/" + name + "/" + file_name[1])
+        file.save(face_path)
+        SEM.release()
+        return "Frame obtained"
+    return "Error"
+
+@GetPost
+def CloseConnection() -> str:
+    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum']]
+    CAMERAMODULE.DisableCam(cam_enum)
+    return "Connection closed"
 
 def flask_run():
     APP.run( host=HOST_IP, port=HOST_PORT)
