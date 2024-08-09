@@ -83,7 +83,7 @@ class RestfulClient:
     # Post Json Function and Get Text Response
     def PostJson(self, url : str, json_dict : dict[str, str]) -> str:
         response : Response = post(url=url, json=json_dict)
-        return response.text()
+        return response.text
 
     # Post Json and Get Json Response
     def PostGetJson(self, url : str, json_dict : dict[str, str]) -> dict[str, str]:

@@ -41,9 +41,9 @@ class CameraObject:
         self.status_ : str = status
         
 class SelfCameraObject:
-    def __init__(self, *, enum : CameraModuleEnum, object : CameraObject, ip : str) -> None:
+    def __init__(self, enum : CameraModuleEnum, ip : str) -> None:
         self.enum_ : CameraModuleEnum = enum
-        self.object_ : CameraObject = object
+        self.object_ : CameraObject = CameraObject()
         self.ip_ : str = ip
         
 class CameraModule:
@@ -79,7 +79,7 @@ class CameraModule:
         except Exception as e:
             return False
         
-    def read_config(self, file_path):
+    def read_config(self, file_path) -> str:
         try:
             with open(file_path, 'r') as file:
                 lines = file.readlines()
@@ -100,15 +100,18 @@ class CameraModule:
                 if ip_address is None or location is None:
                     raise ValueError("Config file is missing IP or Location entries.")
                 else:
-                    self.cam_.object_.location_ = location
-                    self.cam_.ip_ = ip_address
-                    return True
+                    return location, ip_address
+                    # self.cam_.object_.location_ = location
+                    # self.cam_.ip_ = ip_address
+                    # return True
 
         except FileNotFoundError:
-            return False
+            return "",""
+            # return False
         except Exception as e:
             print(e)
-            return False
+            return "",""
+            # return False
 
     #Change camera IP
     def ChangeIP(self, file_path : str, new_ip : str):

@@ -11,7 +11,7 @@ import cv2
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
-from camera_lib import CameraModule, CameraModuleEnum
+from camera_lib import CameraModule, CameraModuleEnum, SelfCameraObject
 # from cv2 import VideoCapture, UMat, imencode, putText, FONT_HERSHEY_SIMPLEX, LINE_AA
 from cv2.typing import MatLike
 from ultralytics import YOLO # type: ignore
@@ -45,18 +45,25 @@ def ServerStatus() -> None:
 
 #Set camera IP and location
 def CameraSetup() -> None:
-    if CAMERA_MODULE.read_config(CONFIG_PATH):
+    location : str
+    ip_address : str
+    location, ip_address = CAMERA_MODULE.read_config(CONFIG_PATH)
+    # if CAMERA_MODULE.read_config(CONFIG_PATH):
+    if location == "" or ip_address == "":
+        print("Failed to get IP and Location")
+    else:
         print("Camera IP and Location obtained")
         url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CameraSetup.value])
-        temp_dict : dict[str, str] = {'location': f'{CAMERA_MODULE.cam_.object_.location_}'}
+        temp_dict : dict[str, str] = {'location': location}
+        #temp_dict : dict[str, str] = {'location': f'{CAMERA_MODULE.cam_.object_.location_}'}
         response : str = RESTFULCLIENT.PostJson(url, temp_dict)
+        response = response.split('.')[1]
+        print(response)
         cam_enum : CameraModuleEnum = UMAPCAMS[response]
-        CAMERA_MODULE.cam_.enum_ = cam_enum
+        CAMERA_MODULE.cam_ = SelfCameraObject(cam_enum, ip_address)
+        # CAMERA_MODULE.cam_.enum_ = cam_enum
         CAMERA_MODULE.cam_.object_.name_ = cam_enum.value
         CAMERA_MODULE.cam_.object_.status_ = "Online"
-    else:
-        print("Failed to get IP and Location")
-
             
 def Test() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.Test.value])
