@@ -51,6 +51,10 @@ def BotCams(bot_object : BotObject) -> None:
     CamsStatus(context=bot_object.discord_message_, restful_client=bot_object.restful_client_, camera_module=bot_object.camera_module_)
     bot_object.discord_message_.SetMessage('Cams Status')
     
+def BotRefresh(bot_object : BotObject) -> None:
+    bot_object.restful_client_.UpdateServiceDict()
+    bot_object.discord_message_.SetMessage('Service Dict Updated')
+    
 def BotUnknown(bot_object : BotObject) -> None:
     bot_object.discord_message_.SetMessage('I am not sure what you are asking for')
         
@@ -59,6 +63,7 @@ UMAPFEATURE : dict[str, Callable[[BotObject], None]] = {
     'status' : BotStatus,
     'api' : BotApi,
     'cams' : BotCams,
+    'refrest' : BotRefresh,
     'unknown' : BotUnknown
 }
 
