@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}">
+</head>
+<body>
+    <div class="hero">
+        <video autoplay loop muted playsinline class="back-video">
+            <source src="{{ url_for('static', filename = 'images/video.mp4') }}" type="video/mp4">
+        </video>
+        <div class="content">
+            <h1>
+                Live Stream
+            </h1>
+            <h3 class="video_title">
+                <div id="video_frame">
+                    <img id="video_box" alt="Camera Off">
+                </div>
+            </h3>
+            <div id="cam_buttons">
+                <button class="cam_button" id="cams1">Camera 1</button>
+                <button class="cam_button" id="cams2">Camera 2</button>
+                <button class="cam_button" id="cams3">Camera 3</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+$(".cam_button").click(function(){
+    cam_id = $(this).attr('id')
+    url = ("{{ url_for('Live', cams='__cam_no__') }}").replace('__cam_no__', cam_id)
+    $("#video_box").attr('src', url)
+})
+</script>

@@ -83,7 +83,7 @@ def LiveList() -> str:
     temp : str = ""
     for f in range(1, 4):
         temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
-    return temp
+    return render_template("live.html")
 
 @GetPost
 def LiveCam() -> str:
