@@ -2,7 +2,7 @@ from os import getenv
 from dotenv import load_dotenv
 from discord import Client, Intents, Message
 from discord_message_lib import DiscordMessage
-from message_binder import get_response
+from message_binder import GetResponse, BotObject
 from responses_lib import RestfulClient
 from camera_lib import CameraModule
 
@@ -22,10 +22,16 @@ async def SendMessage(message: Message, content: str) -> None:
         return
     
     try:
+        # Check if the server is online
         if not RESTFULCLIENT.server_api_:
             RESTFULCLIENT.UpdateServiceDict()
             RESTFULCLIENT.server_api_ = True
-        response : DiscordMessage = get_response(message, content, RESTFULCLIENT, CAMERAMODULE)
+            
+        # Create Bot Object
+        Bot : BotObject = BotObject(message=message, content=content, restful_client=RESTFULCLIENT, camera_module=CAMERAMODULE)
+            
+        # Get Response 
+        response : DiscordMessage = GetResponse(bot_object=Bot)
         await message.channel.send(content=response.message_, embed=response.embed_) # type: ignore
     except Exception as e:
         print(e) # WHO CARES ABOUT EXCEPTIONS
