@@ -11,8 +11,10 @@ from flask import jsonify, Response, request, render_template
 from os import getenv, makedirs
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
-from cv2 import imencode, IMREAD_COLOR, imread
+from cv2 import imencode, IMREAD_COLOR, imread, imwrite
 from threading import Semaphore
+from face_recognition import recognize_faces
+import time
 
 # load the environment variables
 load_dotenv()
@@ -34,6 +36,9 @@ UMAPCAMS2: dict[str, CameraModule] = {}
 for cam in CameraModuleEnum:
     UMAPCAMS2[cam.value] = cam #type: ignore
 
+# Initialize the last call time to 0
+LAST_CALL_TIME = 0
+        
 # Centralised computing
 @Get
 async def Index() -> str:
@@ -111,6 +116,30 @@ def Live(cams) -> Response | str:
         return "Camera Offline"
     else:
         return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
+    
+def check_time():
+    global LAST_CALL_TIME
+    current_time = time.time()
+    
+    # Check if it has been less than 10 seconds since the last call
+    if current_time - LAST_CALL_TIME < 10:
+        return False
+    else:
+        LAST_CALL_TIME = current_time
+        return True
+
+@GetPost
+def ImpostorDetected() -> str:
+    cam_no : str = UMAPCAMS[request.get_json()['cam_no'].split(".")[1]].value
+    if check_time():
+        cam_image : str = "image/" + cam_no + "/test.jpg"
+        intruder_image : str = "image/Intruder/test.jpg"
+        image = imread(cam_image, IMREAD_COLOR)
+        imwrite(intruder_image, image)
+        # image = imread("image/Intruder/test.jpg", IMREAD_COLOR)
+        # image : str = "image/Intruder/test.jpg"
+        print(recognize_faces(intruder_image))
+    return "success"
 
 
 @GetPost

@@ -21,8 +21,8 @@ from sys import exit
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
 CAMERA_MODULE : CameraModule = CameraModule()
-MODEL = YOLO('yolov8n.pt')
-# MODEL.classes = [0, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+MODEL = YOLO('yolov8n_saved_model/yolov8n_float32.tflite')
+# MODEL = YOLO('yolov8n.pt')
 
 CONFIG_PATH: str = "config.txt"
 
@@ -72,6 +72,7 @@ def Index() -> None:
 def SendVideo() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
     camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
+    # camera : cv2.VideoCapture = cv2.VideoCapture(0)
     success : bool
     frame : cv2.UMat | MatLike
     ret : bool
@@ -81,7 +82,6 @@ def SendVideo() -> None:
             print("Failed to read frame")
             break
         else:
-            #result = MODEL(frame)
             results = Detection(frame)
             # print(type(results))
             # results = squeeze(results.render())
@@ -91,7 +91,7 @@ def SendVideo() -> None:
             print(response)
 
 def Detection(frame):
-    results = MODEL(frame)
+    results = MODEL(frame, conf=0.6)
     for result in results:
         boxes = result.boxes
 
@@ -117,8 +117,17 @@ def Detection(frame):
             label = f"{class_name}: {confidence:.2f}"
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
+            ImpostorDetected(class_name)
     return frame
+
+def ImpostorDetected(Impostor_type : str) -> None:
+    url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.ImpostorDetected.value])
+    if Impostor_type != "":
+        temp_dict : dict[str, str] = {'cam_no' : f'{CAMERA_MODULE.cam_.enum_}'}
+        # temp_dict2 : dict[str, str] = {'Impostor' : Impostor_type + " Found"}
+        response : str = RESTFULCLIENT.PostJson(url, temp_dict)
+        # response2 : str = RESTFULCLIENT.PostJson(url, temp_dict2)
+        print(response)
 
 def CloseConnection() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CloseConnection.value])
