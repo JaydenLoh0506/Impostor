@@ -6,6 +6,7 @@
 # - k_constant_variable
 # - FunctionName
 
+# torch==2.2.0 torchvision=0.17
 import signal
 import cv2
 from os import getenv
@@ -80,6 +81,7 @@ def SendVideo() -> None:
             print("Failed to read frame")
             break
         else:
+            #result = MODEL(frame)
             results = Detection(frame)
             # print(type(results))
             # results = squeeze(results.render())
@@ -88,22 +90,8 @@ def SendVideo() -> None:
             response : str = RESTFULCLIENT.PostFile(url, CAMERA_MODULE.cam_.enum_, video)
             print(response)
 
-
 def Detection(frame):
-
-    # classNames = ['person', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe']
-    # classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-    #           "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
-    #           "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
-    #           "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-    #           "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
-    #           "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-    #           "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
-    #           "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
-    #           "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
-    #           "teddy bear", "hair drier", "toothbrush"
-    #           ]
-    results = MODEL(frame, stream = False)
+    results = MODEL(frame)
     for result in results:
         boxes = result.boxes
 
@@ -112,44 +100,24 @@ def Detection(frame):
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
             # Extract the class and confidence
-            cls = int(box.cls[0])
-            confidence = box.conf[0]
+            confidence = float(box.conf)
+            cls = int(box.cls)
+
 
             # Get the class name
-            class_name = MODEL.names[cls]
+            #class_name = MODEL.names[cls]
+            if cls == 0:  # Class 0 is 'person' in COCO dataset
+                class_name = 'human'
+            elif cls in [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]:  # Animal classes in COCO dataset
+                class_name = 'animal'
+            else:
+                continue
 
             # Draw bounding box and label on the frame
-            label = f'{class_name}: {confidence:.2f}'
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-    # coordinates
-    # for r in results:
-    #     boxes = r.boxes
+            label = f"{class_name}: {confidence:.2f}"
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-    #     for box in boxes:
-    #         # bounding box
-    #         x1, y1, x2, y2 = box.xyxy[0]
-    #         x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2) # convert to int values
-
-    #         # put box in cam
-    #         cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 255), 3)
-
-    #         # confidence
-    #         confidence = ceil((box.conf[0]*100))/100
-    #         print("Confidence --->",confidence)
-
-    #         # class name
-    #         cls = int(box.cls[0])
-    #         print("Class name -->", classNames[cls])
-
-    #         # object details
-    #         org = [x1, y1]
-    #         font = cv2.FONT_HERSHEY_SIMPLEX
-    #         fontScale = 1
-    #         color = (255, 0, 0)
-    #         thickness = 2
-
-    #         cv2.putText(frame, classNames[cls], org, font, fontScale, color, thickness)
     return frame
 
 def CloseConnection() -> None:
