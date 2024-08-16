@@ -21,9 +21,9 @@
                 </div>
             </h3>
             <div id="cam_buttons">
-                <button class="cam_button" id="cams1">Camera 1</button>
-                <button class="cam_button" id="cams2">Camera 2</button>
-                <button class="cam_button" id="cams3">Camera 3</button>
+                <button class="cam_button active" id="cams1">Cam 1</button>
+                <button class="cam_button" id="cams2">Cam 2</button>
+                <button class="cam_button" id="cams3">Cam 3</button>
             </div>
         </div>
     </div>
@@ -35,5 +35,9 @@ $(".cam_button").click(function(){
     cam_id = $(this).attr('id')
     url = ("{{ url_for('Live', cams='__cam_no__') }}").replace('__cam_no__', cam_id)
     $("#video_box").attr('src', url)
+
+    // Remove 'active' class from all buttons and add it to the clicked one
+    $(".cam_button").removeClass("active");
+    $(this).addClass("active");
 })
 </script>

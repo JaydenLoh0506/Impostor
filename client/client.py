@@ -82,12 +82,13 @@ def SendVideo() -> None:
             print("Failed to read frame")
             break
         else:
-            results = Detection(frame)
+            results, class_name = Detection(frame)
             # print(type(results))
             # results = squeeze(results.render())
             ret, buffer = cv2.imencode(".jpg", results)
             video = buffer.tobytes()
             response : str = RESTFULCLIENT.PostFile(url, CAMERA_MODULE.cam_.enum_, video)
+            ImpostorDetected(class_name)
             print(response)
 
 def Detection(frame):
@@ -117,8 +118,8 @@ def Detection(frame):
             label = f"{class_name}: {confidence:.2f}"
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            ImpostorDetected(class_name)
-    return frame
+            #ImpostorDetected(class_name)
+    return frame, class_name
 
 def ImpostorDetected(Impostor_type : str) -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.ImpostorDetected.value])

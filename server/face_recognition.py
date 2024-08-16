@@ -6,7 +6,7 @@ import os
 import time
 
 # Path settings
-DB_PATH = "image"
+DB_PATH = "image/faces"
 MODEL_NAME = 'Facenet'  # Consider using a smaller model for faster processing
 
 def recognize_faces(image_path):
