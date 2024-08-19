@@ -117,7 +117,7 @@ def Live(cams) -> Response | str:
     else:
         return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
     
-def check_time():
+def CheckTime():
     global LAST_CALL_TIME
     current_time = time.time()
     
@@ -131,7 +131,7 @@ def check_time():
 @GetPost
 def ImpostorDetected() -> str:
     cam_no : str = UMAPCAMS[request.get_json()['cam_no'].split(".")[1]].value
-    if check_time():
+    if CheckTime():
         cam_image : str = "image/" + cam_no + "/test.jpg"
         intruder_image : str = "image/Intruder/test.jpg"
         image = imread(cam_image, IMREAD_COLOR)
