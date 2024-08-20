@@ -144,7 +144,7 @@ async def ImpostorDetected() -> str:
             return "failed"
         for no, people in enumerate(recognize_faces(intruder_image)['results']):
             if 'name' in people:
-                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{recognize_faces(intruder_image)['name']} no.{no} Detected in {cam_no}")
+                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}")
             else:
                 await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder no.{no} Detected in {cam_no}")
             await WebhookSend(webhook_url=WEBHOOK_URL, content="im cams")
