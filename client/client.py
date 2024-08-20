@@ -89,6 +89,7 @@ def SendVideo() -> None:
 
 def Detection(frame):
     results = MODEL(frame, conf=0.6)
+    class_name : str = ""
     for result in results:
         boxes = result.boxes
 
