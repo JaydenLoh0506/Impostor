@@ -84,14 +84,14 @@ def GetFrame(path: str):
         yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
 
 @Get # temporary code
-def LiveList() -> str:
+async def LiveList() -> str:
     temp : str = ""
     for f in range(1, 4):
         temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
     return render_template("live.html")
 
 @GetPost
-def LiveCam() -> str:
+async def LiveCam() -> str:
     cam_name = request.form.get('path')
     cam_name = cam_name.split(".")[1] #type: ignore
     if cam_name not in UMAPCAMSENUM:
@@ -108,7 +108,7 @@ def LiveCam() -> str:
     return "Error"
 
 @GetPost
-def Live(cams) -> Response | str:
+async def Live(cams) -> Response | str:
     if cams not in UMAPCAMSMODULE:
         return "Invalid Camera"
     status: str = CAMERAMODULE.GetCamStat(UMAPCAMSENUM[f'{UMAPCAMSMODULE[cams]}'.split(".")[1]])
@@ -129,7 +129,7 @@ def CheckTime():
         return True
 
 @GetPost
-def ImpostorDetected() -> str:
+async def ImpostorDetected() -> str:
     cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
     if CheckTime():
         cam_image : str = "image/" + cam_no + "/test.jpg"
@@ -138,12 +138,17 @@ def ImpostorDetected() -> str:
         imwrite(intruder_image, image)
         # image = imread("image/Intruder/test.jpg", IMREAD_COLOR)
         # image : str = "image/Intruder/test.jpg"
-        print(recognize_faces(intruder_image))
+        #print(recognize_faces(intruder_image))
+        if 'name' in recognize_faces(intruder_image):
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{recognize_faces(intruder_image)['name']} Detected in {cam_no}")
+        else:
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no}")
+        await WebhookSend(webhook_url=WEBHOOK_URL, content="im cams")
     return "success"
 
 
 @GetPost
-def CameraSetup() -> Response | str:
+async def CameraSetup() -> Response | str:
     cam_enum : CameraModuleEnum | None
     cam_info : str = request.get_json()['location']
     cam_enum = CAMERAMODULE.SetCamLocation(cam_info)
