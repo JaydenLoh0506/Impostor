@@ -69,7 +69,8 @@ API_SERVICE_DICT = {
     ApiServiceEnum.CameraSetup : (False, "Camera Setup"),
     ApiServiceEnum.CloseConnection : (False, "Close Connection"),
     ApiServiceEnum.FaceRecognition : (False, "Face Recognition"),
-    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected")
+    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected"),
+    ApiServiceEnum.Image : (False, "Image url internal use only")
 }
 
 class RestfulClient:
