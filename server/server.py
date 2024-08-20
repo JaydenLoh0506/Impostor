@@ -28,13 +28,13 @@ SEM : Semaphore = Semaphore()
 CAMERAMODULE.GenerateCamDict()
 
 # Unordered Map
-UMAPCAMS : dict[str, CameraModuleEnum] = {}
+UMAPCAMSENUM : dict[str, CameraModuleEnum] = {}
 for cam in CameraModuleEnum:
-    UMAPCAMS[cam.name] = cam
+    UMAPCAMSENUM[cam.name] = cam
 
-UMAPCAMS2: dict[str, CameraModule] = {}
+UMAPCAMSMODULE: dict[str, CameraModule] = {}
 for cam in CameraModuleEnum:
-    UMAPCAMS2[cam.value] = cam #type: ignore
+    UMAPCAMSMODULE[cam.value] = cam #type: ignore
 
 # Initialize the last call time to 0
 LAST_CALL_TIME = 0
@@ -94,7 +94,7 @@ def LiveList() -> str:
 def LiveCam() -> str:
     cam_name = request.form.get('path')
     cam_name = cam_name.split(".")[1] #type: ignore
-    if cam_name not in UMAPCAMS:
+    if cam_name not in UMAPCAMSENUM:
         return "Invalid Camera"
     else:
         file = request.files["file"]
@@ -102,16 +102,16 @@ def LiveCam() -> str:
             return "No file selected"
         if file:
             SEM.acquire()
-            file.save("image/" + UMAPCAMS[cam_name].value + "/test.jpg")
+            file.save("image/" + UMAPCAMSENUM[cam_name].value + "/test.jpg")
             SEM.release()
             return "Frame obtained"
     return "Error"
 
 @GetPost
 def Live(cams) -> Response | str:
-    if cams not in UMAPCAMS2:
+    if cams not in UMAPCAMSMODULE:
         return "Invalid Camera"
-    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[f'{UMAPCAMS2[cams]}'.split(".")[1]])
+    status: str = CAMERAMODULE.GetCamStat(UMAPCAMSENUM[f'{UMAPCAMSMODULE[cams]}'.split(".")[1]])
     if status == "Offline":
         return "Camera Offline"
     else:
@@ -130,7 +130,7 @@ def CheckTime():
 
 @GetPost
 def ImpostorDetected() -> str:
-    cam_no : str = UMAPCAMS[request.get_json()['cam_no'].split(".")[1]].value
+    cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
     if CheckTime():
         cam_image : str = "image/" + cam_no + "/test.jpg"
         intruder_image : str = "image/Intruder/test.jpg"
@@ -171,7 +171,7 @@ def FaceRecognition() -> Response | str:
 
 @GetPost
 def CloseConnection() -> str:
-    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum'].split(".")[1]]
+    cam_enum : CameraModuleEnum = UMAPCAMSENUM[request.get_json()['enum'].split(".")[1]]
     CAMERAMODULE.DisableCam(cam_enum)
     return "Connection closed"
 

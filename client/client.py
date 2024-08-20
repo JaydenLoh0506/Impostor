@@ -31,10 +31,6 @@ UMAPCAMS : dict[str, CameraModuleEnum] = {}
 for cam in CameraModuleEnum:
     UMAPCAMS[cam.name] = cam
 
-UMAPCAMS2: dict[str, CameraModule] = {}
-for cam in CameraModuleEnum:
-    UMAPCAMS2[cam.value] = cam #type : ignore
-
 #Check server status
 def ServerStatus() -> None:
     try:
