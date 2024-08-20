@@ -25,8 +25,6 @@
 # Date : 2024-08-04
 
 from enum import Enum, unique
-from cv2 import VideoCapture, UMat, imencode, imshow, waitKey, destroyAllWindows
-from cv2.typing import MatLike
 
 @unique
 class CameraModuleEnum(Enum):
@@ -55,31 +53,14 @@ class CameraModule:
         self.cam_dict_ : dict[CameraModuleEnum, CameraObject] = {}
 
         # Client use only
-        self.cam_ : SelfCameraObject
+        self.cam_ : SelfCameraObject = SelfCameraObject()
     
     def GenerateCamDict(self) -> None:
         """SERVER function"""
         for key in CameraModuleEnum:
             self.cam_dict_[key] = CameraObject(key.value, "", "Offline")
-
-    #Get camera IP
-    def ReadIP(self, file_path) -> bool:
-        """CLIENT function"""
-        try:
-            with open(file_path, 'r') as file:
-                # Read the content of the file
-                for line in file:
-                    line = line.strip()
-                    # Extract the IP address from the content
-                    if line.startswith("IP:"):
-                        self.cam_.ip_ = line.split(" ")[1]
-                        break
-                return True
-        except FileNotFoundError:
-            return False
-        except Exception as e:
-            return False
-        
+    
+    #Read IP and Location from file
     def read_config(self, file_path):
         try:
             with open(file_path, 'r') as file:
@@ -109,37 +90,7 @@ class CameraModule:
             return False
         except Exception as e:
             print(e)
-            return False
-
-    #Change camera IP
-    def ChangeIP(self, file_path : str, new_ip : str):
-        """CLIENT function"""
-        try:
-            # Ensure the new IP ends with /video
-            if not new_ip.endswith("/video"):
-                new_ip += "/video"
-                
-            # Read the current content of the file
-            with open(file_path, 'r') as file:
-                content = file.readline().strip()
-            
-            # Modify the content with the new IP address
-            if content.startswith("IP:"):
-                prefix = content.split(" ")[0]
-                new_content = f"{prefix} {new_ip}"
-                
-                # Write the updated content back to the file
-                with open(file_path, 'w') as file:
-                    file.write(new_content)
-                    
-                self.cam_.ip_ = new_ip
-            else:
-                raise ValueError("Invalid file format. Expected 'IP: <url>'.")
-        except FileNotFoundError:
-            return "The file does not exist."
-        except Exception as e:
-            return f"An error occurred: {str(e)}"
-        
+            return False 
     
      # SERVER function
     #Get path to save images for specific camera
@@ -168,6 +119,7 @@ class CameraModule:
         else:
             self.cam_dict_[cams].status_ = "Offline"
 
+    #Set camera location (server side)
     def SetCamLocation(self, location: str) -> CameraModuleEnum | None:
         cam_enum : CameraModuleEnum = self.DistributeCam() #type: ignore
         if cam_enum != None:
@@ -175,15 +127,8 @@ class CameraModule:
             self.cam_dict_[cam_enum].location_ = location
         return cam_enum
 
+    #Set camera to offline after use (server)
     def DisableCam(self, cam_enum: CameraModuleEnum) -> None:
         self.ToggleCamStatus(cam_enum)
         self.cam_dict_[cam_enum].location_ = ""
-
-    def ReturnEnum(self, cam_enum_str: str) -> CameraModuleEnum | None:
-        cam_enum  : CameraModuleEnum | None = None
-        for key in CameraModuleEnum:
-            if f'{key.value}' == cam_enum_str or f'{key}' == cam_enum_str:
-                cam_enum = key
-                break
-        return cam_enum
     

@@ -11,8 +11,10 @@ from flask import jsonify, Response, request, render_template
 from os import getenv, makedirs
 from dotenv import load_dotenv
 from camera_lib import CameraModule, CameraModuleEnum
-from cv2 import imencode, IMREAD_COLOR, imread
+from cv2 import imencode, IMREAD_COLOR, imread, imwrite
 from threading import Semaphore
+from face_recognition import recognize_faces
+import time
 
 # load the environment variables
 load_dotenv()
@@ -25,11 +27,18 @@ SEM : Semaphore = Semaphore()
 
 CAMERAMODULE.GenerateCamDict()
 
-# unordered map
-UMAPCAMS : dict[str, CameraModuleEnum] = {}
-for key in CameraModuleEnum:
-    UMAPCAMS[key.value] = key
+# Unordered Map
+UMAPCAMSENUM : dict[str, CameraModuleEnum] = {}
+for cam in CameraModuleEnum:
+    UMAPCAMSENUM[cam.name] = cam
 
+UMAPCAMSMODULE: dict[str, CameraModule] = {}
+for cam in CameraModuleEnum:
+    UMAPCAMSMODULE[cam.value] = cam #type: ignore
+
+# Initialize the last call time to 0
+LAST_CALL_TIME = 0
+        
 # Centralised computing
 @Get
 async def Index() -> str:
@@ -71,7 +80,7 @@ def GetFrame(path: str):
         file = imread("image/" + path + "/test.jpg", IMREAD_COLOR)
         SEM.release()
         _b, file = imencode(".jpg", file)
-        file = file.tobytes()
+        file = file.tobytes() #type: ignore
         yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
 
 @Get # temporary code
@@ -79,12 +88,13 @@ def LiveList() -> str:
     temp : str = ""
     for f in range(1, 4):
         temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
-    return temp
+    return render_template("live.html")
 
 @GetPost
 def LiveCam() -> str:
     cam_name = request.form.get('path')
-    if cam_name not in UMAPCAMS:
+    cam_name = cam_name.split(".")[1] #type: ignore
+    if cam_name not in UMAPCAMSENUM:
         return "Invalid Camera"
     else:
         file = request.files["file"]
@@ -92,21 +102,44 @@ def LiveCam() -> str:
             return "No file selected"
         if file:
             SEM.acquire()
-            file.save("image/" + cam_name + "/test.jpg")
+            file.save("image/" + UMAPCAMSENUM[cam_name].value + "/test.jpg")
             SEM.release()
             return "Frame obtained"
     return "Error"
 
 @GetPost
 def Live(cams) -> Response | str:
-    # print(CAMERAMODULE.ReturnEnum(cams))
-    if cams not in UMAPCAMS:
+    if cams not in UMAPCAMSMODULE:
         return "Invalid Camera"
-    status: str = CAMERAMODULE.GetCamStat(UMAPCAMS[cams])
+    status: str = CAMERAMODULE.GetCamStat(UMAPCAMSENUM[f'{UMAPCAMSMODULE[cams]}'.split(".")[1]])
     if status == "Offline":
         return "Camera Offline"
     else:
         return Response(GetFrame(cams), mimetype="multipart/x-mixed-replace; boundary=frame")
+    
+def CheckTime():
+    global LAST_CALL_TIME
+    current_time = time.time()
+    
+    # Check if it has been less than 10 seconds since the last call
+    if current_time - LAST_CALL_TIME < 10:
+        return False
+    else:
+        LAST_CALL_TIME = current_time
+        return True
+
+@GetPost
+def ImpostorDetected() -> str:
+    cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
+    if CheckTime():
+        cam_image : str = "image/" + cam_no + "/test.jpg"
+        intruder_image : str = "image/Intruder/test.jpg"
+        image = imread(cam_image, IMREAD_COLOR)
+        imwrite(intruder_image, image)
+        # image = imread("image/Intruder/test.jpg", IMREAD_COLOR)
+        # image : str = "image/Intruder/test.jpg"
+        print(recognize_faces(intruder_image))
+    return "success"
 
 
 @GetPost
@@ -131,7 +164,6 @@ def FaceRecognition() -> Response | str:
     if file:
         SEM.acquire()
         print(file_name[1])
-        # file.save("image/" + name + "/" + file_name[1])
         file.save(face_path)
         SEM.release()
         return "Frame obtained"
@@ -139,7 +171,7 @@ def FaceRecognition() -> Response | str:
 
 @GetPost
 def CloseConnection() -> str:
-    cam_enum : CameraModuleEnum = UMAPCAMS[request.get_json()['enum']]
+    cam_enum : CameraModuleEnum = UMAPCAMSENUM[request.get_json()['enum'].split(".")[1]]
     CAMERAMODULE.DisableCam(cam_enum)
     return "Connection closed"
 
@@ -148,7 +180,6 @@ def flask_run():
     
 def main():
     flask_run()
-    #Live()
     
 if __name__ == "__main__":
     main()
