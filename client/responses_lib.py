@@ -53,14 +53,14 @@ class ApiServiceEnum(Enum):
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : (False,"Offered Service"),
-    ApiServiceEnum.Index : (True,"Main Web"),
+    ApiServiceEnum.Index : (False,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.LiveCam : (False,"Live Cam"),
-    ApiServiceEnum.CameraSetup : (True, "Camera Setup"),
-    ApiServiceEnum.CloseConnection : (True, "Close Connection"),
-    ApiServiceEnum.FaceRecognition : (True, "Face Recognition"),
-    ApiServiceEnum.ImpostorDetected : (True, "Impostor Detected")
+    ApiServiceEnum.LiveCam : (True,"Live Cam"),
+    ApiServiceEnum.CameraSetup : (False, "Camera Setup"),
+    ApiServiceEnum.CloseConnection : (False, "Close Connection"),
+    ApiServiceEnum.FaceRecognition : (False, "Face Recognition"),
+    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected")
 }
 
 class RestfulClient:
