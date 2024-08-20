@@ -108,7 +108,7 @@ def ServerStatus(*, context : DiscordMessage, restful_client : RestfulClient) ->
             context.EmbedAddField(name=API_SERVICE_DICT[api][1], value=restful_client.CreateUrl(restful_client.service_dict_[api.value]), inline=False)
     
 def CamsStatus(*, context : DiscordMessage, restful_client : RestfulClient, camera_module : CameraModule) -> None:
-    context.CreateEmbed(title="Cams Status", description="Press the link to open cams application", colour=Colour.green())
+    context.CreateEmbed(title="Cams Status", description=f"{restful_client.CreateUrl(ApiServiceEnum.Image.value)}", colour=Colour.green())
     
     CamsDictUpdate(camera_module=camera_module, restful_client=restful_client)
     

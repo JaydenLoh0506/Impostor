@@ -140,14 +140,15 @@ async def ImpostorDetected() -> str:
         # image : str = "image/Intruder/test.jpg"
         print(recognize_faces(intruder_image))
         if 'results' not in recognize_faces(intruder_image):
-            await WebhookSend(webhook_url=WEBHOOK_URL, content="Detected Intruder in {cam_no} failed")
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed")
             return "failed"
-        for no, people in enumerate(recognize_faces(intruder_image)['results']):
-            if 'name' in people:
+        
+        if len(recognize_faces(intruder_image)['results']) == 0:
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no}")
+        else:
+            for no, people in enumerate(recognize_faces(intruder_image)['results']):
                 await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}")
-            else:
-                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder no.{no} Detected in {cam_no}")
-            await WebhookSend(webhook_url=WEBHOOK_URL, content="im cams")
+        await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im cams")
     return "success"
 
 
