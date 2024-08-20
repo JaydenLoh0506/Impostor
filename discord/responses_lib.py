@@ -1,8 +1,6 @@
-# this is a dummy file from client, pls copy the latest file from client folder
+# include this file at the top of your main file
 
 # [WARNING] Update Service Dict requires try and except block
-
-# include this file at the top of your main file
 
 # this file is a library for client requests
 # it includes functions for client requests
@@ -35,8 +33,9 @@
 # pip install requests
 # import this file in your main file
 
-from requests import post, Response, get 
-from enum import Enum, unique   
+from requests import post, Response, get # type: ignore
+from enum import Enum, unique  
+#from flask import jsonify 
 
 # Enum for API Service must match the server
 @unique # ignore type convention due to enum using VariableName
@@ -45,20 +44,23 @@ class ApiServiceEnum(Enum):
     Index = "Index"
     Test = "Test"
     TestComms = "TestComms"
-    Live = "Live"
-    CamDict = "CamDict"
-    Image = "Image"
-
+    LiveCam = "LiveCam"
+    CameraSetup = "CameraSetup"
+    CloseConnection = "CloseConnection"
+    FaceRecognition = "FaceRecognition"
+    ImpostorDetected = "ImpostorDetected"
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : (False,"Offered Service"),
-    ApiServiceEnum.Index : (True,"Main Web"),
+    ApiServiceEnum.Index : (False,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.Live : (True, "Camera Feed"),
-    ApiServiceEnum.CamDict : (False, "Camera Status"),
-    ApiServiceEnum.Image : (False, "Reference Image Location")
+    ApiServiceEnum.LiveCam : (True,"Live Cam"),
+    ApiServiceEnum.CameraSetup : (False, "Camera Setup"),
+    ApiServiceEnum.CloseConnection : (False, "Close Connection"),
+    ApiServiceEnum.FaceRecognition : (False, "Face Recognition"),
+    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected")
 }
 
 class RestfulClient:
@@ -83,7 +85,7 @@ class RestfulClient:
     # Post Json Function and Get Text Response
     def PostJson(self, url : str, json_dict : dict[str, str]) -> str:
         response : Response = post(url=url, json=json_dict)
-        return response.text()
+        return response.text
 
     # Post Json and Get Json Response
     def PostGetJson(self, url : str, json_dict : dict[str, str]) -> dict[str, str]:
@@ -99,10 +101,15 @@ class RestfulClient:
     def GetText(self, url : str) -> str:
         response : Response = get(url=url)
         return response.text
+    
+    # Post Text Response
+    def PostText(self, url : str, text : str) -> str:
+        response : Response = post(url=url, data=text)
+        return response.text
 
     # Post File Function
-    def PostFile(self, url : str, file) -> str:
-        response : Response = post(url=url, files={"file": file})
+    def PostFile(self, url : str, path, file) -> str:
+        response : Response = post(url=url, data={"path": path}, files={"file": file})
         return response.text
 
     # Get File Function
@@ -114,4 +121,3 @@ class RestfulClient:
     def UpdateServiceDict(self) -> None:
         """Require try and except block"""
         self.service_dict_ = self.GetJson(self.CreateUrl("/api")) # First Route must be /api is fixed
-        self.service_dict_[ApiServiceEnum.Image.value] = "/image/"
