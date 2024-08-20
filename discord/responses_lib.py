@@ -56,11 +56,15 @@ class ApiServiceEnum(Enum):
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
-    ApiServiceEnum.ApiService : (False,"Offered Service"),
-    ApiServiceEnum.Index : (False,"Main Web"),
+    ApiServiceEnum.ApiService : (True,"Offered Service"),
+    ApiServiceEnum.Index : (True,"Main Web"),
     ApiServiceEnum.Test : (False,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
+    ApiServiceEnum.LiveList : (True,"Server Camera List"),
+    ApiServiceEnum.Live : (False,"Live Camera"),
     ApiServiceEnum.LiveCam : (True,"Live Cam"),
+    ApiServiceEnum.CamDict : (True,"Camera Dictionary"),
+    ApiServiceEnum.TestDict : (False,"Test Dictionary"),
     ApiServiceEnum.CameraSetup : (False, "Camera Setup"),
     ApiServiceEnum.CloseConnection : (False, "Close Connection"),
     ApiServiceEnum.FaceRecognition : (False, "Face Recognition"),
