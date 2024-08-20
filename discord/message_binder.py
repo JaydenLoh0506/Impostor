@@ -116,7 +116,7 @@ def CamsStatus(*, context : DiscordMessage, restful_client : RestfulClient, came
         if cam_obj.status_ == 'Offline':
             context.EmbedAddField(name=f"{cam_obj.name_}", value='Offline', inline=False)
         else:
-            context.EmbedAddField(name=f"{cam_obj.name_}({cam_obj.location_})", value=restful_client.CreateUrl(f'{restful_client.service_dict_[ApiServiceEnum.Image.name]}{cam_obj.name_}'), inline=False)
+            context.EmbedAddField(name=f"{cam_obj.name_}({cam_obj.location_})", value=f'Online ({cam_obj.location_})', inline=False)
 
     
 def CamsDictUpdate(*, camera_module : CameraModule, restful_client : RestfulClient) -> None:

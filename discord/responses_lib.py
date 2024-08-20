@@ -53,6 +53,7 @@ class ApiServiceEnum(Enum):
     CloseConnection = "CloseConnection"
     FaceRecognition = "FaceRecognition"
     ImpostorDetected = "ImpostorDetected"
+    Image = '/live/'
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
