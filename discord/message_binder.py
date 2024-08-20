@@ -3,11 +3,33 @@ from discord_message_lib import DiscordMessage
 from responses_lib import RestfulClient, ApiServiceEnum, API_SERVICE_DICT
 from camera_lib import CameraModule, CameraModuleEnum, CameraObject
 from typing import Callable
+from enum import Enum, unique
 
 # Unordered Map
 UMAPCAMS : dict[str, CameraModuleEnum] = {}
 for cam in CameraModuleEnum:
     UMAPCAMS[cam.name] = cam
+
+@unique
+class BotFeatureEnum(Enum):
+    status_ = 'status'
+    api_ = 'api'
+    cams_ = 'cams'
+    refresh_ = 'refresh'
+    help_ = 'help'
+    unknown_ = 'unknown'
+    
+UMAPBOTFEATURE : dict[str, BotFeatureEnum] = {}
+for feature in BotFeatureEnum:
+    UMAPBOTFEATURE[feature.value] = feature
+    
+UMAPBOTFEATUREDESCRIPTION : dict[BotFeatureEnum, str] = {
+    BotFeatureEnum.status_ : 'Check the status of the server',
+    BotFeatureEnum.api_ : 'Check the server API',
+    BotFeatureEnum.cams_ : 'Check the status of the cameras',
+    BotFeatureEnum.refresh_ : 'Refresh the service dict',
+    BotFeatureEnum.help_ : 'List of commands',
+}
     
 class BotObject:
     def __init__(self, *, message : Message, content : str, restful_client : RestfulClient, camera_module : CameraModule) -> None:
@@ -31,10 +53,10 @@ def GetResponse(bot_object : BotObject) -> DiscordMessage:
     :rtype: DiscordMessage
     """
     word = bot_object.content_.split(' ')[0].lower()
-    if word in UMAPFEATURE:
-        RunFunction(func=UMAPFEATURE[word], bot_object=bot_object)
+    if word in UMAPBOTFEATURE:
+        RunFunction(func=UMAPENUMFUNC[UMAPBOTFEATURE[word]], bot_object=bot_object)
     else:
-        RunFunction(func=UMAPFEATURE['unknown'], bot_object=bot_object)
+        RunFunction(func=UMAPENUMFUNC[BotFeatureEnum.unknown_], bot_object=bot_object)
     return bot_object.discord_message_
 
 # message function for dict
@@ -55,16 +77,23 @@ def BotRefresh(bot_object : BotObject) -> None:
     bot_object.restful_client_.UpdateServiceDict()
     bot_object.discord_message_.SetMessage('Service Dict Updated')
     
+def BotHelp(bot_object : BotObject) -> None:
+    global UMAPENUMFUNC
+    bot_object.discord_message_.CreateEmbed(title="Help", description="List of commands", colour=Colour.blue())
+    for key, value in UMAPBOTFEATUREDESCRIPTION.items():
+        bot_object.discord_message_.EmbedAddField(name=key.value, value=value, inline=False)
+    
 def BotUnknown(bot_object : BotObject) -> None:
     bot_object.discord_message_.SetMessage('I am not sure what you are asking for')
         
 # Unordered Map
-UMAPFEATURE : dict[str, Callable[[BotObject], None]] = {
-    'status' : BotStatus,
-    'api' : BotApi,
-    'cams' : BotCams,
-    'refrest' : BotRefresh,
-    'unknown' : BotUnknown
+UMAPENUMFUNC : dict[BotFeatureEnum, Callable[[BotObject], None]] = {
+    BotFeatureEnum.status_ : BotStatus,
+    BotFeatureEnum.api_ : BotApi,
+    BotFeatureEnum.cams_ : BotCams,
+    BotFeatureEnum.refresh_ : BotRefresh,
+    BotFeatureEnum.help_ : BotHelp,
+    BotFeatureEnum.unknown_ : BotUnknown
 }
 
 # funciton
