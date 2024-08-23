@@ -9,6 +9,7 @@
 # torch==2.2.0 torchvision=0.17
 import signal
 import cv2
+import datetime
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
@@ -121,6 +122,7 @@ def Detection(frame):
 def ImpostorDetected(Impostor_type : str) -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.ImpostorDetected.value])
     if Impostor_type != "":
+        print(datetime.datetime.now())
         temp_dict : dict[str, str] = {'cam_no' : f'{CAMERA_MODULE.cam_.enum_}'}
         # temp_dict2 : dict[str, str] = {'Impostor' : Impostor_type + " Found"}
         response : str = RESTFULCLIENT.PostJson(url, temp_dict)
