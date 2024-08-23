@@ -15,6 +15,7 @@ from cv2 import imencode, IMREAD_COLOR, imread, imwrite
 from threading import Semaphore
 from face_recognition import recognize_faces
 import time
+from datetime import datetime
 
 # load the environment variables
 load_dotenv()
@@ -42,12 +43,12 @@ LAST_CALL_TIME = 0
 # Centralised computing
 @Get
 async def Index() -> str:
-    await WebhookSend(webhook_url=WEBHOOK_URL, content="im status")
+    await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im status {datetime.now()}")
     return f"Message Sent"
 
 @Get
 async def TestComms() -> str:
-    await WebhookSend(webhook_url=WEBHOOK_URL, content="Comms Received Successfully")
+    await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Comms Received Successfully {datetime.now()}")
     return "Success"
 
 # Will be removed
@@ -140,11 +141,11 @@ async def ImpostorDetected() -> str:
         # image : str = "image/Intruder/test.jpg"
         print(recognize_faces(intruder_image))
         if 'results' not in recognize_faces(intruder_image):
-            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed")
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed {datetime.now()}")
             return "failed"
         
         if len(recognize_faces(intruder_image)['results']) == 0:
-            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no}")
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no} {datetime.now()}")
         else:
             for no, people in enumerate(recognize_faces(intruder_image)['results']):
                 await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}")
