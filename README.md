@@ -1,5 +1,7 @@
 # Impostor
-This is a client-server application for the intruder detection system using edge computer
+This is a client-server application for the intruder detection system using an edge computer.<br />
+Each application can be run independently as a node and each node can be responsible for one role.<br />
+Currently there is no implementation for multiple node server application as this project is just to test the effectiveness of edge computing intruder detection system.
 
 # Architecture
 ![General Architecture](https://github.com/user-attachments/assets/006722bf-1ec1-4d0b-99ea-407b94b87709)
