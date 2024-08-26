@@ -11,6 +11,7 @@ TOKEN = getenv('DISCORD_TOKEN')
 INTENTS : Intents = Intents.default()
 INTENTS.message_content = True
 CLIENT : Client = Client(intents=INTENTS)
+BOT_KEYWORD : str = "im"
 
 CAMERAMODULE : CameraModule = CameraModule()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))
@@ -48,7 +49,7 @@ async def on_message(message: Message) -> None:
     if message.author == CLIENT.user:
         return
     
-    if message.content.startswith('im'):
+    if message.content.startswith(BOT_KEYWORD):
         await SendMessage(message, message.content[3:])
 
 def bot_run() -> None:

@@ -22,7 +22,7 @@ from sys import exit
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
 CAMERA_MODULE : CameraModule = CameraModule()
-MODEL = YOLO('client/yolov8n_saved_model/yolov8n_float32.tflite')
+MODEL = YOLO('yolov8n_saved_model/yolov8n_float32.tflite')
 # MODEL = YOLO('yolov8n.pt')
 
 CONFIG_PATH: str = "config.txt"
