@@ -167,7 +167,7 @@ async def CameraSetup() -> Response | str:
 @GetPost
 def FaceRecognition() -> Response | str:
     face_path : str = request.form.get("path") # type: ignore
-    file_name : list[str] = (face_path.split("image/", 1)[1]).split("/")
+    file_name : list[str] = (face_path.split("image/faces", 1)[1]).split("/")
     name : str = file_name[0]
     makedirs("image/" + name, exist_ok=True)
     file = request.files["file"]

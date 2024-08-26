@@ -68,8 +68,8 @@ def Index() -> None:
 
 def SendVideo() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
-    camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
-    # camera : cv2.VideoCapture = cv2.VideoCapture(0)
+    # camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
+    camera : cv2.VideoCapture = cv2.VideoCapture(1)
     success : bool
     frame : cv2.UMat | MatLike
     ret : bool

@@ -60,7 +60,7 @@ def capture_photos() -> bool:
     base_path: str = "image"
     
     source: str = ""
-    if CAMERA_MODULE.ReadIP(CONFIG_PATH):
+    if CAMERA_MODULE.read_config(CONFIG_PATH):
         source = CAMERA_MODULE.cam_.ip_
     else:
         exit("Please turn on your camera")
