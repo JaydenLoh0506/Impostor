@@ -126,7 +126,20 @@ This function is used to send webhooks.
 
 ### reponses_lib
 This file acts as an adapter for ease of use of the requests library.<br />
+<br />
+1. ApiServiceEnum<br />
+![image](https://github.com/user-attachments/assets/5df778ea-6855-4fd1-be99-1cb85d82093f)<br />
+This class is a link to the server service API.<br />
+It key is the object and the value is for the keyword for the dictionary in the server.
 
+2. API_SERVICE_DICT<br />
+![image](https://github.com/user-attachments/assets/59995d4e-0e85-48b6-a24e-078a088070a2)<br />
+This dictionary is used for the discord application or other UI to display visible API for users and hide some developer functions for functions used only
+
+3. UpdateServiceDict<br />
+![image](https://github.com/user-attachments/assets/2bef1899-8db0-475f-b1a3-5ab5770ef416)<br />
+This function is used to obtain API service from the server.<br />
+This function may fail if the client could not access the server. 
 
 ## Discord bot
 ### message_binder.py
