@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/f9988712-d7a8-4d36-88d5-07a345b90d41)# Impostor
+# Impostor
 This is a client-server application for the intruder detection system using edge computer
 
 # Architecture
