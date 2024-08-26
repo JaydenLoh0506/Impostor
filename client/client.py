@@ -22,7 +22,7 @@ from sys import exit
 load_dotenv()
 RESTFULCLIENT : RestfulClient = RestfulClient(str(getenv('SERVER_IP')), int(str(getenv('SERVER_PORT'))))  
 CAMERA_MODULE : CameraModule = CameraModule()
-MODEL = YOLO('client/yolov8n_saved_model/yolov8n_float32.tflite')
+MODEL = YOLO('yolov8n_saved_model/yolov8n_float32.tflite')
 # MODEL = YOLO('yolov8n.pt')
 
 CONFIG_PATH: str = "config.txt"
@@ -68,8 +68,8 @@ def Index() -> None:
 
 def SendVideo() -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.LiveCam.value])
-    camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
-    # camera : cv2.VideoCapture = cv2.VideoCapture(0)
+    # camera : cv2.VideoCapture = cv2.VideoCapture(CAMERA_MODULE.cam_.ip_)
+    camera : cv2.VideoCapture = cv2.VideoCapture(1)
     success : bool
     frame : cv2.UMat | MatLike
     ret : bool
