@@ -90,9 +90,9 @@ TBA
 ![image](https://github.com/user-attachments/assets/8d673c33-91d1-4d25-8e61-7aae3c542cbf)<br />
 This class is the object for the camera object. The key is the object and the value is the location of the camera
 
-2. CameraObject / SelfCameraObject
+2. CameraObject / SelfCameraObject<br />
 ![image](https://github.com/user-attachments/assets/c0dda11e-8365-4e94-9b9a-02ed6405e91f)<br />
-Camera Object is used for the status of the server
+Camera Object is used for the status of the server<br />
 Self Camera Object is used for clients for self-naming purposes
 
 ### flask_lib.py
@@ -145,7 +145,8 @@ This function may fail if the client could not access the server.
 ### message_binder.py
 1. BotFeatureEnum (class) <br />
 ![image](https://github.com/user-attachments/assets/64df3dc4-a862-49da-8304-7e838af0e413) <br />
-This class is the object for each response. The key is the object and the value is the keyword the bot responds to <br />
+This class is the object for each response.<br />
+The key is the object and the value is the keyword the bot responds to <br />
 Unknown is a wildcard that is only used for exceptions on the keyword
 
 2. UMAPENUMFUNC <br />
