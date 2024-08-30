@@ -75,101 +75,101 @@ Discord bot is responsible for<br />
 1.0.0
 
 # Dependencies
-absl-py                      2.1.0
-aiohappyeyeballs             2.3.4
-aiohttp                      3.10.0
-aiosignal                    1.3.1
-asgiref                      3.8.1
-astunparse                   1.6.3
-attrs                        23.2.0
-beautifulsoup4               4.12.3
-blinker                      1.8.2
-certifi                      2024.7.4
-charset-normalizer           3.3.2
-click                        8.1.7
-colorama                     0.4.6
-contourpy                    1.2.1
-cycler                       0.12.1
-deepface                     0.0.93
-discord                      2.3.2
-discord.py                   2.4.0
-filelock                     3.15.4
-fire                         0.6.0
-Flask                        3.0.3
-Flask-Cors                   4.0.1
-flatbuffers                  24.3.25
-fonttools                    4.53.1
-frozenlist                   1.4.1
-fsspec                       2024.6.1
-gast                         0.6.0
-gdown                        5.2.0
-google-pasta                 0.2.0
-grpcio                       1.65.5
-gunicorn                     23.0.0
-h5py                         3.11.0
-idna                         3.7
-itsdangerous                 2.2.0
-Jinja2                       3.1.4
-keras                        3.5.0
-kiwisolver                   1.4.5
-libclang                     18.1.1
-Markdown                     3.7
-markdown-it-py               3.0.0
-MarkupSafe                   2.1.5
-matplotlib                   3.9.1.post1
-mdurl                        0.1.2
-ml-dtypes                    0.4.0
-mpmath                       1.3.0
-mtcnn                        0.1.1
-multidict                    6.0.5
-namex                        0.0.8
-networkx                     3.3
-numpy                        1.26.4
-opencv-python                4.10.0.84
-opt-einsum                   3.3.0
-optree                       0.12.1
-packaging                    24.1
-pandas                       2.2.2
-pillow                       10.4.0
-pip                          24.0
-protobuf                     4.25.4
-psutil                       6.0.0
-py-cpuinfo                   9.0.0
-Pygments                     2.18.0
-pyparsing                    3.1.2
-PySocks                      1.7.1
-python-dateutil              2.9.0.post0
-python-dotenv                1.0.1
-pytz                         2024.1
-PyYAML                       6.0.2
-requests                     2.32.3
-retina-face                  0.0.17
-rich                         13.7.1
-scipy                        1.14.0
-seaborn                      0.13.2
-setuptools                   72.1.0
-six                          1.16.0
-soupsieve                    2.6
-sympy                        1.13.1
-tensorboard                  2.17.1
-tensorboard-data-server      0.7.2
-tensorflow                   2.17.0
-tensorflow-intel             2.17.0
-tensorflow-io-gcs-filesystem 0.31.0
-termcolor                    2.4.0
-tf_keras                     2.17.0
-torch                        2.2.0
-torchvision                  0.17.0
-tqdm                         4.66.5
-typing_extensions            4.12.2
-tzdata                       2024.1
-ultralytics                  8.2.75
-ultralytics-thop             2.0.0
-urllib3                      2.2.2
-Werkzeug                     3.0.3
-wheel                        0.44.0
-wrapt                        1.16.0
-yarl                         1.9.4
+absl-py &ensp                     2.1.0<br />
+aiohappyeyeballs &ensp            2.3.4<br />
+aiohttp &ensp                     3.10.0<br />
+aiosignal &ensp                   1.3.1<br />
+asgiref &ensp                     3.8.1<br />
+astunparse &ensp                  1.6.3<br />
+attrs &ensp                       23.2.0<br />
+beautifulsoup4 &ensp              4.12.3<br />
+blinker &ensp                     1.8.2<br />
+certifi &ensp                     2024.7.4<br />
+charset-normalizer &ensp          3.3.2<br />
+click &ensp                       8.1.7<br />
+colorama &ensp                    0.4.6<br />
+contourpy &ensp                   1.2.1<br />
+cycler &ensp                      0.12.1<br />
+deepface &ensp                    0.0.93<br />
+discord &ensp                     2.3.2<br />
+discord.py &ensp                  2.4.0<br />
+filelock &ensp                    3.15.4<br />
+fire &ensp                        0.6.0<br />
+Flask &ensp                       3.0.3<br />
+Flask-Cors &ensp                  4.0.1<br />
+flatbuffers &ensp                 24.3.25<br />
+fonttools &ensp                   4.53.1<br />
+frozenlist &ensp                  1.4.1<br />
+fsspec &ensp                      2024.6.1<br />
+gast &ensp                        0.6.0<br />
+gdown &ensp                       5.2.0<br />
+google-pasta &ensp                0.2.0<br />
+grpcio &ensp                      1.65.5<br />
+gunicorn &ensp                    23.0.0<br />
+h5py &ensp                        3.11.0<br />
+idna &ensp                        3.7<br />
+itsdangerous &ensp                2.2.0<br />
+Jinja2 &ensp                      3.1.4<br />
+keras &ensp                       3.5.0<br />
+kiwisolver &ensp                  1.4.5<br />
+libclang &ensp                    18.1.1<br />
+Markdown &ensp                    3.7<br />
+markdown-it-py &ensp              3.0.0<br />
+MarkupSafe &ensp                  2.1.5<br />
+matplotlib &ensp                  3.9.1.post1<br />
+mdurl &ensp                       0.1.2<br />
+ml-dtypes &ensp                   0.4.0<br />
+mpmath &ensp                      1.3.0<br />
+mtcnn &ensp                       0.1.1<br />
+multidict &ensp                   6.0.5<br />
+namex &ensp                       0.0.8<br />
+networkx &ensp                    3.3<br />
+numpy &ensp                       1.26.4<br />
+opencv-python &ensp               4.10.0.84<br />
+opt-einsum &ensp                  3.3.0<br />
+optree &ensp                      0.12.1<br />
+packaging &ensp                   24.1<br />
+pandas &ensp                      2.2.2<br />
+pillow &ensp                      10.4.0<br />
+pip &ensp                         24.0<br />
+protobuf &ensp                    4.25.4<br />
+psutil &ensp                      6.0.0<br />
+py-cpuinfo &ensp                  9.0.0<br />
+Pygments &ensp                    2.18.0<br />
+pyparsing &ensp                   3.1.2<br />
+PySocks &ensp                     1.7.1<br />
+python-dateutil &ensp             2.9.0.post0<br />
+python-dotenv &ensp               1.0.1<br />
+pytz &ensp                        2024.1<br />
+PyYAML &ensp                      6.0.2<br />
+requests &ensp                    2.32.3<br />
+retina-face &ensp                 0.0.17<br />
+rich &ensp                        13.7.1<br />
+scipy &ensp                       1.14.0<br />
+seaborn &ensp                     0.13.2<br />
+setuptools &ensp                  72.1.0<br />
+six &ensp                         1.16.0<br />
+soupsieve &ensp                   2.6<br />
+sympy &ensp                       1.13.1<br />
+tensorboard &ensp                 2.17.1<br />
+tensorboard-data-server &ensp     0.7.2<br />
+tensorflow &ensp                  2.17.0<br />
+tensorflow-intel &ensp            2.17.0<br />
+tensorflow-io-gcs-filesystem &ensp 0.31.0<br />
+termcolor &ensp                   2.4.0<br />
+tf_keras &ensp                    2.17.0<br />
+torch &ensp                       2.2.0<br />
+torchvision &ensp                 0.17.0<br /><br />
+tqdm &ensp                        4.66.5<br />
+typing_extensions &ensp           4.12.2<br />
+tzdata &ensp                      2024.1<br />
+ultralytics &ensp                 8.2.75<br />
+ultralytics-thop &ensp            2.0.0<br />
+urllib3 &ensp                     2.2.2<br />
+Werkzeug &ensp                    3.0.3<br />
+wheel &ensp                       0.44.0<br />
+wrapt &ensp                       1.16.0<br />
+yarl &ensp                        1.9.4<br />
 
 # Variable naming convention
 1. ClassName
