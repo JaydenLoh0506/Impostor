@@ -173,9 +173,10 @@ async def CameraSetup() -> Response | str:
 @GetPost
 def FaceRecognition() -> Response | str:
     face_path : str = request.form.get("path") # type: ignore
-    file_name : list[str] = (face_path.split("image/faces", 1)[1]).split("/")
-    name : str = file_name[0]
-    makedirs("image/" + name, exist_ok=True)
+    print(face_path)
+    file_name : list[str] = face_path.split("/")
+    name : str = file_name[-2]
+    makedirs("image/faces/" + name, exist_ok=True)
     file = request.files["file"]
     if file.filename == "":
             return "No file selected"

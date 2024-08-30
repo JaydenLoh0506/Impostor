@@ -59,15 +59,15 @@ def CapturePhoto() -> bool:
     """
     Capture 9 photos and save them with different brightness levels and instructions.
     """
-    base_path: str = "image"
+    base_path: str = "image/faces"
     
     source: str = ""
-    if CAMERA_MODULE.read_config(CONFIG_PATH):
+    if CAMERA_MODULE.ReadConfig(CONFIG_PATH):
         source = CAMERA_MODULE.cam_.ip_
     else:
         exit("Please turn on your camera")
 
-    cap: cv2.VideoCapture = cv2.VideoCapture(source)
+    cap: cv2.VideoCapture = cv2.VideoCapture(1)
 
     if not cap.isOpened():
         print("Error: Could not open camera.")
