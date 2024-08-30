@@ -61,7 +61,7 @@ class CameraModule:
             self.cam_dict_[key] = CameraObject(key.value, "", "Offline")
     
     #Read IP and Location from file
-    def read_config(self, file_path):
+    def ReadConfig(self, file_path):
         try:
             with open(file_path, 'r') as file:
                 lines = file.readlines()

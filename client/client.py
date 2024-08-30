@@ -13,10 +13,9 @@ import datetime
 from os import getenv
 from dotenv import load_dotenv
 from responses_lib import RestfulClient, ApiServiceEnum
-from camera_lib import CameraModule, CameraModuleEnum, SelfCameraObject
+from camera_lib import CameraModule, CameraModuleEnum
 from cv2.typing import MatLike
 from ultralytics import YOLO # type: ignore
-from math import ceil
 from sys import exit
 
 load_dotenv()
@@ -43,7 +42,7 @@ def ServerStatus() -> None:
 
 #Set camera IP and location
 def CameraSetup() -> None:
-    if CAMERA_MODULE.read_config(CONFIG_PATH):
+    if CAMERA_MODULE.ReadConfig(CONFIG_PATH):
         print("Camera IP and Location obtained")
         url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.CameraSetup.value])
         temp_dict : dict[str, str] = {'location': f'{CAMERA_MODULE.cam_.object_.location_}'}

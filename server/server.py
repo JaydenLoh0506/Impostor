@@ -41,21 +41,24 @@ for cam in CameraModuleEnum:
 LAST_CALL_TIME = 0
         
 # Centralised computing
+# API Function from Server
 @Get
 async def Index() -> str:
     await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im status {datetime.now()}")
     return f"Message Sent"
 
+# API Function from Server
 @Get
 async def TestComms() -> str:
     await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Comms Received Successfully {datetime.now()}")
     return "Success"
 
-# Will be removed
+# API Function from Server
 @Get
 async def Test() -> str:
     return "Success"
 
+# API Function from Server
 @Get
 async def TestDict() -> str:
     for num, key in enumerate(CameraModuleEnum):
@@ -64,6 +67,7 @@ async def TestDict() -> str:
     await WebhookSend(webhook_url=WEBHOOK_URL, content="im cams")
     return "Changed"
 
+# API Function from Server
 @Get
 async def CamDict() -> Response:
     json_dict : dict[str, dict[str, str]] = {}
@@ -84,13 +88,12 @@ def GetFrame(path: str):
         file = file.tobytes() #type: ignore
         yield (b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + file + b"\r\n")
 
-@Get # temporary code
+# API Function from Server
+@Get
 async def LiveList() -> str:
-    temp : str = ""
-    for f in range(1, 4):
-        temp += f'<a href="/live/cams{f}">cams{f}</a><br>'
     return render_template("live.html")
 
+# API Function from Server
 @GetPost
 async def LiveCam() -> str:
     cam_name = request.form.get('path')
@@ -108,6 +111,7 @@ async def LiveCam() -> str:
             return "Frame obtained"
     return "Error"
 
+# API Function from Server
 @GetPost
 async def Live(cams) -> Response | str:
     if cams not in UMAPCAMSMODULE:
@@ -129,6 +133,7 @@ def CheckTime():
         LAST_CALL_TIME = current_time
         return True
 
+# API Function from Server
 @GetPost
 async def ImpostorDetected() -> str:
     cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
@@ -153,7 +158,7 @@ async def ImpostorDetected() -> str:
         await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im cams")
     return "success"
 
-
+# API Function from Server
 @GetPost
 async def CameraSetup() -> Response | str:
     cam_enum : CameraModuleEnum | None
@@ -164,6 +169,7 @@ async def CameraSetup() -> Response | str:
     else:
         return f"{cam_enum}"
     
+# API Function from Server
 @GetPost
 def FaceRecognition() -> Response | str:
     face_path : str = request.form.get("path") # type: ignore
@@ -181,6 +187,7 @@ def FaceRecognition() -> Response | str:
         return "Frame obtained"
     return "Error"
 
+# API Function from Server
 @GetPost
 def CloseConnection() -> str:
     cam_enum : CameraModuleEnum = UMAPCAMSENUM[request.get_json()['enum'].split(".")[1]]
