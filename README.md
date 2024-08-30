@@ -75,101 +75,101 @@ Discord bot is responsible for<br />
 1.0.0
 
 # Dependencies
-absl-py &nbsp;&nbsp;&nbsp;&nbsp;                     2.1.0<br />
-aiohappyeyeballs &nbsp;&nbsp;&nbsp;&nbsp;            2.3.4<br />
-aiohttp &nbsp;&nbsp;&nbsp;&nbsp;                     3.10.0<br />
-aiosignal &nbsp;&nbsp;&nbsp;&nbsp;                   1.3.1<br />
-asgiref &nbsp;&nbsp;&nbsp;&nbsp;                     3.8.1<br />
-astunparse &nbsp;&nbsp;&nbsp;&nbsp;                  1.6.3<br />
-attrs &nbsp;&nbsp;&nbsp;&nbsp;                       23.2.0<br />
-beautifulsoup4 &nbsp;&nbsp;&nbsp;&nbsp;              4.12.3<br />
-blinker &nbsp;&nbsp;&nbsp;&nbsp;                     1.8.2<br />
-certifi &nbsp;&nbsp;&nbsp;&nbsp;                     2024.7.4<br />
-charset-normalizer &nbsp;&nbsp;&nbsp;&nbsp;          3.3.2<br />
-click &nbsp;&nbsp;&nbsp;&nbsp;                       8.1.7<br />
-colorama &nbsp;&nbsp;&nbsp;&nbsp;                    0.4.6<br />
-contourpy &nbsp;&nbsp;&nbsp;&nbsp;                   1.2.1<br />
-cycler &nbsp;&nbsp;&nbsp;&nbsp;                      0.12.1<br />
-deepface &nbsp;&nbsp;&nbsp;&nbsp;                    0.0.93<br />
-discord &nbsp;&nbsp;&nbsp;&nbsp;                     2.3.2<br />
-discord.py &nbsp;&nbsp;&nbsp;&nbsp;                  2.4.0<br />
-filelock &nbsp;&nbsp;&nbsp;&nbsp;                    3.15.4<br />
-fire &nbsp;&nbsp;&nbsp;&nbsp;                        0.6.0<br />
-Flask &nbsp;&nbsp;&nbsp;&nbsp;                       3.0.3<br />
-Flask-Cors &nbsp;&nbsp;&nbsp;&nbsp;                  4.0.1<br />
-flatbuffers &nbsp;&nbsp;&nbsp;&nbsp;                 24.3.25<br />
-fonttools &nbsp;&nbsp;&nbsp;&nbsp;                   4.53.1<br />
-frozenlist &nbsp;&nbsp;&nbsp;&nbsp;                  1.4.1<br />
-fsspec &nbsp;&nbsp;&nbsp;&nbsp;                      2024.6.1<br />
-gast &nbsp;&nbsp;&nbsp;&nbsp;                        0.6.0<br />
-gdown &nbsp;&nbsp;&nbsp;&nbsp;                       5.2.0<br />
-google-pasta &nbsp;&nbsp;&nbsp;&nbsp;                0.2.0<br />
-grpcio &nbsp;&nbsp;&nbsp;&nbsp;                      1.65.5<br />
-gunicorn &nbsp;&nbsp;&nbsp;&nbsp;                    23.0.0<br />
-h5py &nbsp;&nbsp;&nbsp;&nbsp;                        3.11.0<br />
-idna &nbsp;&nbsp;&nbsp;&nbsp;                        3.7<br />
-itsdangerous &nbsp;&nbsp;&nbsp;&nbsp;                2.2.0<br />
-Jinja2 &nbsp;&nbsp;&nbsp;&nbsp;                      3.1.4<br />
-keras &nbsp;&nbsp;&nbsp;&nbsp;                       3.5.0<br />
-kiwisolver &nbsp;&nbsp;&nbsp;&nbsp;                  1.4.5<br />
-libclang &nbsp;&nbsp;&nbsp;&nbsp;                    18.1.1<br />
-Markdown &nbsp;&nbsp;&nbsp;&nbsp;                    3.7<br />
-markdown-it-py &nbsp;&nbsp;&nbsp;&nbsp;              3.0.0<br />
-MarkupSafe &nbsp;&nbsp;&nbsp;&nbsp;                  2.1.5<br />
-matplotlib &nbsp;&nbsp;&nbsp;&nbsp;                  3.9.1.post1<br />
-mdurl &nbsp;&nbsp;&nbsp;&nbsp;                       0.1.2<br />
-ml-dtypes &nbsp;&nbsp;&nbsp;&nbsp;                   0.4.0<br />
-mpmath &nbsp;&nbsp;&nbsp;&nbsp;                      1.3.0<br />
-mtcnn &nbsp;&nbsp;&nbsp;&nbsp;                       0.1.1<br />
-multidict &nbsp;&nbsp;&nbsp;&nbsp;                   6.0.5<br />
-namex &nbsp;&nbsp;&nbsp;&nbsp;                       0.0.8<br />
-networkx &nbsp;&nbsp;&nbsp;&nbsp;                    3.3<br />
-numpy &nbsp;&nbsp;&nbsp;&nbsp;                       1.26.4<br />
-opencv-python &nbsp;&nbsp;&nbsp;&nbsp;               4.10.0.84<br />
-opt-einsum &nbsp;&nbsp;&nbsp;&nbsp;                  3.3.0<br />
-optree &nbsp;&nbsp;&nbsp;&nbsp;                      0.12.1<br />
-packaging &nbsp;&nbsp;&nbsp;&nbsp;                   24.1<br />
-pandas &nbsp;&nbsp;&nbsp;&nbsp;                      2.2.2<br />
-pillow &nbsp;&nbsp;&nbsp;&nbsp;                      10.4.0<br />
-pip &nbsp;&nbsp;&nbsp;&nbsp;                         24.0<br />
-protobuf &nbsp;&nbsp;&nbsp;&nbsp;                    4.25.4<br />
-psutil &nbsp;&nbsp;&nbsp;&nbsp;                      6.0.0<br />
-py-cpuinfo &nbsp;&nbsp;&nbsp;&nbsp;                  9.0.0<br />
-Pygments &nbsp;&nbsp;&nbsp;&nbsp;                    2.18.0<br />
-pyparsing &nbsp;&nbsp;&nbsp;&nbsp;                   3.1.2<br />
-PySocks &nbsp;&nbsp;&nbsp;&nbsp;                     1.7.1<br />
-python-dateutil &nbsp;&nbsp;&nbsp;&nbsp;             2.9.0.post0<br />
-python-dotenv &nbsp;&nbsp;&nbsp;&nbsp;               1.0.1<br />
-pytz &nbsp;&nbsp;&nbsp;&nbsp;                        2024.1<br />
-PyYAML &nbsp;&nbsp;&nbsp;&nbsp;                      6.0.2<br />
-requests &nbsp;&nbsp;&nbsp;&nbsp;                    2.32.3<br />
-retina-face &nbsp;&nbsp;&nbsp;&nbsp;                 0.0.17<br />
-rich &nbsp;&nbsp;&nbsp;&nbsp;                        13.7.1<br />
-scipy &nbsp;&nbsp;&nbsp;&nbsp;                       1.14.0<br />
-seaborn &nbsp;&nbsp;&nbsp;&nbsp;                     0.13.2<br />
-setuptools &nbsp;&nbsp;&nbsp;&nbsp;                  72.1.0<br />
-six &nbsp;&nbsp;&nbsp;&nbsp;                         1.16.0<br />
-soupsieve &nbsp;&nbsp;&nbsp;&nbsp;                   2.6<br />
-sympy &nbsp;&nbsp;&nbsp;&nbsp;                       1.13.1<br />
-tensorboard &nbsp;&nbsp;&nbsp;&nbsp;                 2.17.1<br />
-tensorboard-data-server &nbsp;&nbsp;&nbsp;&nbsp;     0.7.2<br />
-tensorflow &nbsp;&nbsp;&nbsp;&nbsp;                  2.17.0<br />
-tensorflow-intel &nbsp;&nbsp;&nbsp;&nbsp;            2.17.0<br />
-tensorflow-io-gcs-filesystem &nbsp;&nbsp;&nbsp;&nbsp; 0.31.0<br />
-termcolor &nbsp;&nbsp;&nbsp;&nbsp;                   2.4.0<br />
-tf_keras &nbsp;&nbsp;&nbsp;&nbsp;                    2.17.0<br />
-torch &nbsp;&nbsp;&nbsp;&nbsp;                       2.2.0<br />
-torchvision &nbsp;&nbsp;&nbsp;&nbsp;                 0.17.0<br />
-tqdm &nbsp;&nbsp;&nbsp;&nbsp;                        4.66.5<br />
-typing_extensions &nbsp;&nbsp;&nbsp;&nbsp;           4.12.2<br />
-tzdata &nbsp;&nbsp;&nbsp;&nbsp;                      2024.1<br />
-ultralytics &nbsp;&nbsp;&nbsp;&nbsp;                 8.2.75<br />
-ultralytics-thop &nbsp;&nbsp;&nbsp;&nbsp;            2.0.0<br />
-urllib3 &nbsp;&nbsp;&nbsp;&nbsp;                     2.2.2<br />
-Werkzeug &nbsp;&nbsp;&nbsp;&nbsp;                    3.0.3<br />
-wheel &nbsp;&nbsp;&nbsp;&nbsp;                       0.44.0<br />
-wrapt &nbsp;&nbsp;&nbsp;&nbsp;                       1.16.0<br />
-yarl &nbsp;&nbsp;&nbsp;&nbsp;                        1.9.4<br />
+absl-py&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2.1.0<br />
+aiohappyeyeballs&emsp;&emsp;&emsp;&emsp;&emsp;2.3.4<br />
+aiohttp&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.10.0<br />
+aiosignal&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.3.1<br />
+asgiref&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;3.8.1<br />
+astunparse&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;1.6.3<br />
+attrs&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;23.2.0<br />
+beautifulsoup4&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;4.12.3<br />
+blinker&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.8.2<br />
+certifi&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2024.7.4<br />
+charset-normalizer&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;3.3.2<br />
+click&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;8.1.7<br />
+colorama&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.4.6<br />
+contourpy&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;1.2.1<br />
+cycler&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.12.1<br />
+deepface&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.0.93<br />
+discord&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.3.2<br />
+discord.py&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;2.4.0<br />
+filelock&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.15.4<br />
+fire&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;0.6.0<br />
+Flask&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;3.0.3<br />
+Flask-Cors&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;4.0.1<br />
+flatbuffers&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;24.3.25<br />
+fonttools&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;4.53.1<br />
+frozenlist&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.4.1<br />
+fsspec&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2024.6.1<br />
+gast&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.6.0<br />
+gdown&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;5.2.0<br />
+google-pasta&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;0.2.0<br />
+grpcio&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.65.5<br />
+gunicorn&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;23.0.0<br />
+h5py&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.11.0<br />
+idna&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;3.7<br />
+itsdangerous&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2.2.0<br />
+Jinja2&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;3.1.4<br />
+keras&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.5.0<br />
+kiwisolver&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;1.4.5<br />
+libclang&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;18.1.1<br />
+Markdown&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.7<br />
+markdown-it-py&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.0.0<br />
+MarkupSafe&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;2.1.5<br />
+matplotlib&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;3.9.1.post1<br />
+mdurl&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.1.2<br />
+ml-dtypes&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;0.4.0<br />
+mpmath&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;1.3.0<br />
+mtcnn&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.1.1<br />
+multidict&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;6.0.5<br />
+namex&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.0.8<br />
+networkx&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;3.3<br />
+numpy&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.26.4<br />
+opencv-python&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;4.10.0.84<br />
+opt-einsum&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;3.3.0<br />
+optree&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;0.12.1<br />
+packaging&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;24.1<br />
+pandas&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;2.2.2<br />
+pillow&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&nbsp;10.4.0<br />
+pip&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;24.0<br />
+protobuf&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;4.25.4<br />
+psutil&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;6.0.0<br />
+py-cpuinfo&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;9.0.0<br />
+Pygments&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.18.0<br />
+pyparsing&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;3.1.2<br />
+PySocks&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.7.1<br />
+python-dateutil&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.9.0.post0<br />
+python-dotenv&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;1.0.1<br />
+pytz&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2024.1<br />
+PyYAML&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;6.0.2<br />
+requests&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2.32.3<br />
+retina-face&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;0.0.17<br />
+rich&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;13.7.1<br />
+scipy&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;1.14.0<br />
+seaborn&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.13.2<br />
+setuptools&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;72.1.0<br />
+six&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;1.16.0<br />
+soupsieve&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;2.6<br />
+sympy&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;1.13.1<br />
+tensorboard&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.17.1<br />
+tensorboard-data-server&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.7.2<br />
+tensorflow&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.17.0<br />
+tensorflow-intel&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.17.0<br />
+tensorflow-io-gcs-filesystem&emsp;&emsp;&emsp;&ensp;&nbsp;0.31.0<br />
+termcolor&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.4.0<br />
+tf_keras&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2.17.0<br />
+torch&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;2.2.0<br />
+torchvision&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.17.0<br />
+tqdm&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;4.66.5<br />
+typing_extensions&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;4.8.0<br />
+tzdata&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2024.1<br />
+ultralytics&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;8.2.75<br />
+ultralytics-thop&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;2.0.0<br />
+urllib3&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;2.2.2<br />
+Werkzeug&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;3.0.3<br />
+wheel&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;0.44.0<br />
+wrapt&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;1.16.0<br />
+yarl&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;1.9.4<br />
 
 # Variable naming convention
 1. ClassName
