@@ -75,7 +75,7 @@ Discord bot is responsible for<br />
 1.0.0
 
 # Dependencies
-# server.py dependencies
+## server.py dependencies
 | Package            | Version    |
 |--------------------|------------|
 | aiohttp            | 3.10.5     |
@@ -87,7 +87,7 @@ Discord bot is responsible for<br />
 | python-dotenv      | 1.0.1      |
 | tf_keras           | 2.17.0     |
 
-# client.py dependencies
+## client.py dependencies
 | Package Name     | Version    |
 |------------------|------------|
 | opencv-python    | 4.10.0.84  |
@@ -98,14 +98,14 @@ Discord bot is responsible for<br />
 | torch            | 2.2.0      |
 | torchvision      | 0.17.0     |
 
-# register_face.py dependencies
+## register_face.py dependencies
 | Package Name     | Version    |
 |------------------|------------|
 | opencv-python    | 4.10.0.84  |
 | python-dotenv    | 1.0.1      |
 | requests         | 2.32.3     |
 
-# discord/app.py dependencies
+## discord/app.py dependencies
 | Package Name     | Version    |
 |------------------|------------|
 | python-dotenv    | 1.0.1      |
