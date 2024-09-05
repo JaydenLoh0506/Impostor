@@ -1,4 +1,4 @@
-# Impostor
+# Impostor Detection System 
 This is a client-server application for the intruder detection system using an edge computer.<br />
 Each application can be run independently as a node and each node can be responsible for one role.<br />
 Currently there is no implementation for multiple node server application as this project is just to test the effectiveness of edge computing intruder detection system.
