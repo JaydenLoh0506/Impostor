@@ -161,7 +161,7 @@ During the runtime, the server will first read through all the services and call
 5. Webhook<br />
 This function is used to send webhooks.
 
-### reponses_lib
+### responses_lib
 This file acts as an adapter for ease of use of the requests library.<br />
 <br />
 1. ApiServiceEnum<br />
