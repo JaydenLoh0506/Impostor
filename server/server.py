@@ -164,7 +164,7 @@ async def ImpostorDetected() -> str:
                 await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}{datetime.now()}")
         with open(cam_image, 'rb') as f:
                 picture = File(f)
-                await WebhookSend_CFE(webhook_url=WEBHOOK_URL, content=f"", file = picture, embed = None)
+                await WebhookSend_CFE(webhook_url=WEBHOOK_URL, content=f"@here", file = picture, embed = None)
         await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im cams")
        
     return "success"
