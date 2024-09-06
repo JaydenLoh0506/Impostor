@@ -131,8 +131,8 @@ def CheckTime():
     global LAST_CALL_TIME
     current_time = time.time()
     
-    # Check if it has been less than 10 seconds since the last call
-    if current_time - LAST_CALL_TIME < 10:
+    # Check if it has been less than 5 seconds since the last call
+    if current_time - LAST_CALL_TIME < 5:
         return False
     else:
         LAST_CALL_TIME = current_time
