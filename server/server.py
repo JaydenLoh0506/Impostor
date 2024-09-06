@@ -6,7 +6,7 @@
 # - k_constant_variable
 # - FunctionName
 
-from flask_lib import Get, APP, WebhookSend, GetPost
+from flask_lib import Get, APP, WebhookSend, GetPost, WebhookSend_CFE
 from flask import jsonify, Response, request, render_template
 from os import getenv, makedirs
 from dotenv import load_dotenv
@@ -16,6 +16,7 @@ from threading import Semaphore
 from face_recognition import recognize_faces
 import time
 from datetime import datetime
+from discord import File
 
 # load the environment variables
 load_dotenv()
@@ -56,6 +57,10 @@ async def TestComms() -> str:
 # API Function from Server
 @Get
 async def Test() -> str:
+    cam_image : str = "image/Intruder/test.jpg"
+    with open(cam_image, 'rb') as f:
+        picture = File(f)
+        await WebhookSend_CFE(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {1} {datetime.now()}", file = picture, embed = None)
     return "Success"
 
 # API Function from Server
@@ -136,12 +141,13 @@ def CheckTime():
 # API Function from Server
 @GetPost
 async def ImpostorDetected() -> str:
+
     cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
     if CheckTime():
         cam_image : str = "image/" + cam_no + "/test.jpg"
         intruder_image : str = "image/Intruder/test.jpg"
-        image = imread(cam_image, IMREAD_COLOR)
-        imwrite(intruder_image, image)
+        image_file = imread(cam_image, IMREAD_COLOR)
+        imwrite(intruder_image, image_file)
         # image = imread("image/Intruder/test.jpg", IMREAD_COLOR)
         # image : str = "image/Intruder/test.jpg"
         images = recognize_faces(intruder_image)
@@ -150,12 +156,17 @@ async def ImpostorDetected() -> str:
             await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed {datetime.now()}")
             return "failed"
         
+
         if len(images['results']) == 0:
             await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no} {datetime.now()}")
         else:
             for no, people in enumerate(images['results']):
                 await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}{datetime.now()}")
+        with open(cam_image, 'rb') as f:
+                picture = File(f)
+                await WebhookSend_CFE(webhook_url=WEBHOOK_URL, content=f"", file = picture, embed = None)
         await WebhookSend(webhook_url=WEBHOOK_URL, content=f"im cams")
+       
     return "success"
 
 # API Function from Server

@@ -107,7 +107,8 @@ def Detection(frame):
             if cls == 0:  # Class 0 is 'person' in COCO dataset
                 class_name = 'human'
             elif cls in [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]:  # Animal classes in COCO dataset
-                class_name = 'animal'
+                # class_name = 'animal'
+                class_name = MODEL.names[cls]
             else:
                 continue
 
