@@ -15,6 +15,10 @@ These files are shared across each application
 2. respnses_lib.py
 3. flask_lib.py
 
+## System Overview
+![Actiivity Diagram](https://github.com/user-attachments/assets/110a68ab-21c7-4258-9080-e9f96da8653b)
+<br/>This is the flow of the system
+
 ## Server
 ![Server Module](https://github.com/user-attachments/assets/def03fa0-fa10-4123-ab30-522eb969acc5)
 The server is responsible for<br />
