@@ -143,6 +143,7 @@ def CheckTime():
 async def ImpostorDetected() -> str:
 
     cam_no : str = UMAPCAMSENUM[request.get_json()['cam_no'].split(".")[1]].value
+    impostor_type : str = request.get_json()['impostor_type']
     if CheckTime():
         cam_image : str = "image/" + cam_no + "/test.jpg"
         intruder_image : str = "image/Intruder/test.jpg"
@@ -150,18 +151,20 @@ async def ImpostorDetected() -> str:
         imwrite(intruder_image, image_file)
         # image = imread("image/Intruder/test.jpg", IMREAD_COLOR)
         # image : str = "image/Intruder/test.jpg"
-        images = recognize_faces(intruder_image)
-        print(images)
-        if 'results' not in images:
-            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed {datetime.now()}")
-            return "failed"
-        
-
-        if len(images['results']) == 0:
-            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no} {datetime.now()}")
+        if impostor_type == 'human':
+            images = recognize_faces(intruder_image)
+            print(images)
+            if 'results' not in images:
+                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected Intruder in {cam_no} failed {datetime.now()}")
+                return "failed"
+            
+            if len(images['results']) == 0:
+                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Intruder Detected in {cam_no} {datetime.now()}")
+            else:
+                for no, people in enumerate(images['results']):
+                    await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no + 1} Detected in {cam_no}{datetime.now()}")
         else:
-            for no, people in enumerate(images['results']):
-                await WebhookSend(webhook_url=WEBHOOK_URL, content=f"{people['name']} no.{no} Detected in {cam_no}{datetime.now()}")
+            await WebhookSend(webhook_url=WEBHOOK_URL, content=f"Detected {impostor_type} in {cam_no} {datetime.now()}")
         with open(cam_image, 'rb') as f:
                 picture = File(f)
                 await WebhookSend_CFE(webhook_url=WEBHOOK_URL, content=f"@here", file = picture, embed = None)

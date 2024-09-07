@@ -123,7 +123,7 @@ def ImpostorDetected(Impostor_type : str) -> None:
     url : str = RESTFULCLIENT.CreateUrl(RESTFULCLIENT.service_dict_[ApiServiceEnum.ImpostorDetected.value])
     if Impostor_type != "":
         print(datetime.datetime.now())
-        temp_dict : dict[str, str] = {'cam_no' : f'{CAMERA_MODULE.cam_.enum_}'}
+        temp_dict : dict[str, str] = {'cam_no' : f'{CAMERA_MODULE.cam_.enum_}', 'impostor_type' : Impostor_type}
         # temp_dict2 : dict[str, str] = {'Impostor' : Impostor_type + " Found"}
         response : str = RESTFULCLIENT.PostJson(url, temp_dict)
         # response2 : str = RESTFULCLIENT.PostJson(url, temp_dict2)
