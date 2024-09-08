@@ -24,7 +24,7 @@
 # Python Version : Python 3.12.1
 # Date : 2024-07-07
 # Requests Version : 2.32.3
-# Software version : 0.1.3
+# Software version : 1.0.0
 
 # arguments rules
 # json_dict : dict[str, str]
@@ -58,12 +58,12 @@ class ApiServiceEnum(Enum):
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
     ApiServiceEnum.ApiService : (True,"Offered Service"),
-    ApiServiceEnum.Index : (True,"Main Web"),
-    ApiServiceEnum.Test : (False,"Internal Verification"),
+    ApiServiceEnum.Index : (False,"Main Web"),
+    ApiServiceEnum.Test : (True,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.LiveList : (True,"Server Camera List"),
-    ApiServiceEnum.Live : (False,"Live Camera"),
-    ApiServiceEnum.LiveCam : (True,"Live Cam"),
+    ApiServiceEnum.LiveList : (False,"Server Camera List"),
+    ApiServiceEnum.Live : (True,"Live Camera"),
+    ApiServiceEnum.LiveCam : (False,"Live Cam"),
     ApiServiceEnum.CamDict : (True,"Camera Dictionary"),
     ApiServiceEnum.TestDict : (False,"Test Dictionary"),
     ApiServiceEnum.CameraSetup : (False, "Camera Setup"),

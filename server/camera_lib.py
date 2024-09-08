@@ -22,6 +22,7 @@
 # - ChangeIP : Change camera IP
 
 # Python Version : Python 3.12.1
+# Software Version : 1.0.0
 # Date : 2024-08-04
 
 from enum import Enum, unique

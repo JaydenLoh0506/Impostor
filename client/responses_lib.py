@@ -24,7 +24,7 @@
 # Python Version : Python 3.12.1
 # Date : 2024-07-07
 # Requests Version : 2.32.3
-# Software version : 0.1.3
+# Software version : 1.0.0
 
 # arguments rules
 # json_dict : dict[str, str]
@@ -53,18 +53,24 @@ class ApiServiceEnum(Enum):
     CloseConnection = "CloseConnection"
     FaceRecognition = "FaceRecognition"
     ImpostorDetected = "ImpostorDetected"
+    Image = '/live'
 
 API_SERVICE_DICT : dict[ApiServiceEnum, tuple[bool,str]]
 API_SERVICE_DICT = {
-    ApiServiceEnum.ApiService : (False,"Offered Service"),
+    ApiServiceEnum.ApiService : (True,"Offered Service"),
     ApiServiceEnum.Index : (False,"Main Web"),
-    ApiServiceEnum.Test : (False,"Internal Verification"),
+    ApiServiceEnum.Test : (True,"Internal Verification"),
     ApiServiceEnum.TestComms : (True,"Test Server Communication"),
-    ApiServiceEnum.LiveCam : (True,"Live Cam"),
+    ApiServiceEnum.LiveList : (False,"Server Camera List"),
+    ApiServiceEnum.Live : (True,"Live Camera"),
+    ApiServiceEnum.LiveCam : (False,"Live Cam"),
+    ApiServiceEnum.CamDict : (True,"Camera Dictionary"),
+    ApiServiceEnum.TestDict : (False,"Test Dictionary"),
     ApiServiceEnum.CameraSetup : (False, "Camera Setup"),
     ApiServiceEnum.CloseConnection : (False, "Close Connection"),
     ApiServiceEnum.FaceRecognition : (False, "Face Recognition"),
-    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected")
+    ApiServiceEnum.ImpostorDetected : (False, "Impostor Detected"),
+    ApiServiceEnum.Image : (False, "Image url internal use only")
 }
 
 class RestfulClient:

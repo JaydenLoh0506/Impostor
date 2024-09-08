@@ -10,7 +10,7 @@
 
 # Python Version : Python 3.12.1
 # Date : 26-07-2024
-# Software version : 0.1.1
+# Software version : 1.0.0
 
 # To get Message use the DiscordMessage class to pass in message
 # it containes and embed_ and message_ to send in discord.py

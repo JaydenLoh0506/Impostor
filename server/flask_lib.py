@@ -13,7 +13,7 @@
 # Python Version : Python 3.12.1
 # Date : 21-07-2024
 # Flask Version : 3.0.3
-# Software version : 0.1.1
+# Software version : 1.0.0
 
 # To Run this file
 # You need to install Flask
