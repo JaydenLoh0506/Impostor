@@ -73,7 +73,7 @@ Discord bot is responsible for<br />
 
 ## Call the bot
 1. Keyword bot in app.py
-2. (keyword) help
+2. (keyword) help<br />
 ![help command list](https://github.com/user-attachments/assets/82a73817-aacb-4d43-9849-06fe4929a7fe)
 
 
