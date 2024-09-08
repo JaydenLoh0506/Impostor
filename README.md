@@ -14,6 +14,7 @@ These files are shared across each application
 1. Camera_lib.py
 2. respnses_lib.py
 3. flask_lib.py
+4. discord_message_lib
 
 ## System Overview
 ![Actiivity Diagram](https://github.com/user-attachments/assets/110a68ab-21c7-4258-9080-e9f96da8653b)
@@ -28,7 +29,7 @@ The server is responsible for<br />
 4. Webhook to send notifications in the discord application
    
 ## Run Server 
-1. Install dependencies (notes* pip install flask[async])
+1. Install dependencies in requirements.txt (notes* pip install flask[async])
 2. Provide the .env file with the following key<br />
     a. DISCORD_WEBHOOK=(your token here)<br />
     b. SERVER_IP=(your server IP)<br />
@@ -45,7 +46,7 @@ The client is responsible for<br />
 4. Add character for face recognition
 
 ## Run client
-1. Install dependencies
+1. Install dependencies in requirements.txt
 2. Provide the .env file with the following<br />
     a. SERVER_IP=(your server IP)<br />
     b. SERVER_PORT=(your server port)
@@ -63,7 +64,7 @@ Discord bot is responsible for<br />
 2. Get the status of the system from the server
 
 ## Run bot
-1. Install dependencies
+1. Install dependencies in requirements.txt
 2. Create a discord bot application [here](https://discord.com/developers/applications)
 3. Provide the .env file with the following<br />
     a. SERVER_IP=(your server IP)<br />
