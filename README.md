@@ -70,7 +70,6 @@ Discord bot is responsible for<br />
     b. SERVER_PORT=(your server port)<br />
     c. DISCORD_TOKEN=([get you token in your application](https://discordpy.readthedocs.io/en/stable/discord.html))
 4. Run app.py
-5. Type the command (im help) in discord for the bot help command
 
 ## Call the bot
 1. Keyword bot in app.py
