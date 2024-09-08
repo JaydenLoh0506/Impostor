@@ -70,6 +70,7 @@ Discord bot is responsible for<br />
     b. SERVER_PORT=(your server port)<br />
     c. DISCORD_TOKEN=([get you token in your application](https://discordpy.readthedocs.io/en/stable/discord.html))
 4. Run app.py
+5. Type the command (im help) in discord for the bot help command
 
 ## Call the bot
 1. Keyword bot in app.py
@@ -83,7 +84,6 @@ Discord bot is responsible for<br />
 | Package            | Version    |
 |--------------------|------------|
 | aiohttp            | 3.10.5     |
-| asgiref            | 3.8.1      |
 | deepface           | 0.0.93     |
 | discord            | 2.3.2      |
 | Flask              | 3.0.3      |
