@@ -21,8 +21,8 @@ def recognize_faces(image_path):
         # Improve detection sensitivity by tweaking parameters
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-        if len(faces) == 0:
-            return {"error": "No faces detected"}
+        # if len(faces) == 0:
+        #     return {"error": "No faces detected"}
 
         results = []
 
@@ -62,10 +62,10 @@ def recognize_faces(image_path):
                 if os.path.exists(TEMP_IMAGE_PATH):
                     os.remove(TEMP_IMAGE_PATH)
 
-        if len(results) == 0:
-            return {"error": "Face recognition failed or no matches found"}
+        # if len(results) == 0:
+        #     return {"error": "Face recognition failed or no matches found"}
 
         return {"results": results}
 
     except Exception as e:
-        return {"error": str(e)}
+        return {"results": f'Error found: {str(e)}'}
